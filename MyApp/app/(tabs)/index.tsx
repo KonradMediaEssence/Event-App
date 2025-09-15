@@ -40,10 +40,6 @@ export default function Tab() {
 			</View>
 			<View className='px-4'>
 				<Text>esadsadsa</Text>
-				<Text>esadsadsa</Text>
-				<Text>esadsadsa</Text>
-				<Text>esadsadsa</Text>
-				<Text>esadsadsa</Text>
 			</View>
 		</SafeAreaView>
 	)
