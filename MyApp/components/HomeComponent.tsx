@@ -21,6 +21,8 @@ const HomeComponent = () => {
 					data={EventList}
 					renderItem={({ item }) => <RenderEvent item={item} />}
 					keyExtractor={item => item.id}
+					showsHorizontalScrollIndicator={false}
+					showsVerticalScrollIndicator={false}
 				/>
 			</View>
 		</SafeAreaView>

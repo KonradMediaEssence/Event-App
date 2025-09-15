@@ -45,7 +45,7 @@ export default function Weather({ city = "Warsaw" }: { city?: string }) {
 		? description[0].toUpperCase() + description.slice(1)
 		: ""
 	return (
-		<View className='w-full flex-row items-center justify-between rounded-2xl px-4 py-3'>
+		<View className='px-4 w-full flex-row items-center justify-between rounded-2xl py-3'>
 			<View>
 				<Text className='text-3xl font-semibold text-gray-900'>
 					{data.name}

@@ -19,4 +19,8 @@ export const EventList: Event[] = [
 	{ id: "12", title: "Event Three", date: "2025-10-10" },
 	{ id: "13", title: "Event Three", date: "2025-10-10" },
 	{ id: "14", title: "Event Three", date: "2025-10-10" },
+	{ id: "17", title: "Event Three", date: "2025-10-10" },
+	{ id: "18", title: "Event Three", date: "2025-10-10" },
+	{ id: "19", title: "Event Three", date: "2025-10-10" },
+	{ id: "20", title: "Event Three", date: "2025-10-10" },
 ]
