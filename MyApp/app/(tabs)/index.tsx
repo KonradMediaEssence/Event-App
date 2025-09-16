@@ -2,8 +2,14 @@ import RenderEventHome from "@/components/RenderEventHome"
 import Weather from "@/components/Weather"
 import { EventList } from "@/DummyData/Data"
 import { router } from "expo-router"
-import { FlatList, Text, View } from "react-native"
+import { FlatList, Text, View, Dimensions } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
+
+const { width } = Dimensions.get("window")
+const SIDE_PADDING = 16
+const CARD_SPACING = 14
+const PEEK = 20
+const CARD_WIDTH = width - SIDE_PADDING * 2 - PEEK
 
 export default function Tab() {
 	return (
@@ -24,18 +30,24 @@ export default function Tab() {
 			</View>
 			<View className='w-full'>
 				<FlatList
-					className='pb-7'
+					horizontal
 					data={EventList}
-					renderItem={({ item }) => <RenderEventHome item={item} />}
 					keyExtractor={item => item.id}
-					showsVerticalScrollIndicator={false}
 					showsHorizontalScrollIndicator={false}
-					ItemSeparatorComponent={() => <View className='w-3' />}
-					horizontal={true}
-					contentContainerStyle={{
-						paddingHorizontal: 16,
-						alignItems: "flex-start",
-					}}
+					decelerationRate='fast'
+					snapToAlignment='start'
+					snapToInterval={Math.round(CARD_WIDTH + CARD_SPACING)}
+					disableIntervalMomentum
+					contentContainerStyle={{ paddingHorizontal: SIDE_PADDING }}
+					ItemSeparatorComponent={() => (
+						<View style={{ width: CARD_SPACING }} />
+					)}
+					ListFooterComponent={<View style={{ width: PEEK }} />}
+					renderItem={({ item }) => (
+						<View style={{ width: CARD_WIDTH }}>
+							<RenderEventHome item={item} />
+						</View>
+					)}
 				/>
 			</View>
 			<View className='px-4'>

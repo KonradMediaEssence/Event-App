@@ -1,5 +1,5 @@
 import { SafeAreaView } from "react-native-safe-area-context"
-import { Pressable, Text, View } from "react-native"
+import { Image, Pressable, Text, View } from "react-native"
 import { router, useLocalSearchParams } from "expo-router"
 import { EventList } from "@/DummyData/Data"
 import FontAwesome from "@expo/vector-icons/FontAwesome"
@@ -30,6 +30,14 @@ export default function EventDetails() {
 					{event.title}
 				</Text>
 			</View>
+			<View className='mt-4 w-full'>
+				<Image
+					source={event.src}
+					className='w-full h-[45vh] rounded-xl'
+					resizeMode='cover'
+				/>
+			</View>
+
 			<View className='mt-4'>
 				<Text className='text-2xl font-bold text-gray-900'>
 					Evenet nr. {id}
