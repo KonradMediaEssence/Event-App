@@ -3,6 +3,7 @@ export interface Event {
 	title: string
 	date: Date | string
 	src: string | any
+	category: string
 }
 
 export interface News {
@@ -17,108 +18,126 @@ export const EventList: Event[] = [
 		title: "Event One",
 		date: "2025-10-01",
 		src: require("../assets/images/img.jpg"),
+		category: "Muzyka",
 	},
 	{
 		id: "2",
 		title: "Event Two",
 		date: "2025-10-05",
 		src: require("../assets/images/img-2.jpg"),
+		category: "Sport",
 	},
 	{
 		id: "3",
 		title: "Event Three",
 		date: "2025-10-10",
 		src: require("../assets/images/img.jpg"),
+		category: "Muzyka",
 	},
 	{
 		id: "4",
 		title: "Event Three",
 		date: "2025-10-10",
 		src: require("../assets/images/img-2.jpg"),
+		category: "Sport",
 	},
 	{
 		id: "5",
 		title: "Event Three",
 		date: "2025-10-10",
 		src: require("../assets/images/img.jpg"),
+		category: "Muzyka",
 	},
 	{
 		id: "6",
 		title: "Event Three",
 		date: "2025-10-10",
 		src: require("../assets/images/img-2.jpg"),
+		category: "Sport",
 	},
 	{
 		id: "7",
 		title: "Event Three",
 		date: "2025-10-10",
 		src: require("../assets/images/img.jpg"),
+		category: "Muzyka",
 	},
 	{
 		id: "8",
 		title: "Event Three",
 		date: "2025-10-10",
 		src: require("../assets/images/img-2.jpg"),
+		category: "Sport",
 	},
 	{
 		id: "9",
 		title: "Event Three",
 		date: "2025-10-10",
 		src: require("../assets/images/img.jpg"),
+		category: "Muzyka",
 	},
 	{
 		id: "10",
 		title: "Event Three",
 		date: "2025-10-10",
 		src: require("../assets/images/img-2.jpg"),
+		category: "Sport",
 	},
 	{
 		id: "11",
 		title: "Event Three",
 		date: "2025-10-10",
 		src: require("../assets/images/img.jpg"),
+		category: "Muzyka",
 	},
 	{
 		id: "12",
 		title: "Event Three",
 		date: "2025-10-10",
 		src: require("../assets/images/img-2.jpg"),
+		category: "Sport",
 	},
 	{
 		id: "13",
 		title: "Event Three",
 		date: "2025-10-10",
 		src: require("../assets/images/img.jpg"),
+		category: "Muzyka",
 	},
 	{
 		id: "14",
 		title: "Event Three",
 		date: "2025-10-10",
 		src: require("../assets/images/img-2.jpg"),
+		category: "Sport",
 	},
 	{
 		id: "17",
 		title: "Event Three",
 		date: "2025-10-10",
 		src: require("../assets/images/img.jpg"),
+		category: "Muzyka",
 	},
 	{
 		id: "18",
 		title: "Event Three",
 		date: "2025-10-10",
 		src: require("../assets/images/img-2.jpg"),
+		category: "Sport",
 	},
 	{
 		id: "19",
 		title: "Event Three",
 		date: "2025-10-10",
 		src: require("../assets/images/img.jpg"),
+		category: "Muzyka",
 	},
 	{
 		id: "20",
 		title: "Event Three",
 		date: "2025-10-10",
 		src: require("../assets/images/img-2.jpg"),
+		category: "Sport",
 	},
 ]
 

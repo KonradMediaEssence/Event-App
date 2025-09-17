@@ -51,7 +51,7 @@ export default function Tab() {
 				/>
 			</View>
 			<View className='px-4'>
-				<Text>esadsadsa</Text>
+				<Text>Kolejna skecja jeszcze nie wiem jaka</Text>
 			</View>
 		</SafeAreaView>
 	)

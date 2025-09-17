@@ -6,7 +6,13 @@ import FontAwesome from "@expo/vector-icons/FontAwesome"
 const RenderEventHome = ({
 	item,
 }: {
-	item: { id: string; title: string; date: Date | string; src: string | any }
+	item: {
+		id: string
+		title: string
+		date: Date | string
+		src: string | any
+		category: string
+	}
 }) => {
 	return (
 		<Pressable
@@ -45,9 +51,14 @@ const RenderEventHome = ({
 							</BlurView>
 						</View>
 					</ImageBackground>
-					<View className='mt-4 bg-slate-600 rounded-full flex flex-row py-2 px-4 items-center justify-between self-start'>
-						<Text className=' text-white font-bold  pr-2'>Dołącz!</Text>
-						<FontAwesome size={10} name='chevron-right' color='#fff' />
+					<View className='flex flex-row justify-between'>
+						<View className='mt-4 bg-slate-600 rounded-full flex flex-row py-2 px-4 items-center justify-between self-start'>
+							<Text className=' text-white font-bold  pr-2'>Dołącz!</Text>
+							<FontAwesome size={10} name='chevron-right' color='#fff' />
+						</View>
+						<View className='mt-4 bg-green-600 rounded-full flex flex-row py-2 px-4 items-center justify-between self-start'>
+							<Text className=' text-white font-bold'>{item.category}</Text>
+						</View>
 					</View>
 				</View>
 			</View>
