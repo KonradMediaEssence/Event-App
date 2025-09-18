@@ -66,7 +66,7 @@ export const EventList: Event[] = [
 		date: "2025-10-10",
 		src: require("../assets/images/img-2.jpg"),
 		category: "Sport",
-		cost: "14",
+		cost: 14,
 		time: "18:00",
 	},
 	{

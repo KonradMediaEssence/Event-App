@@ -6,7 +6,7 @@ import { FlatList, Text, View, Dimensions } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 
 const { width } = Dimensions.get("window")
-const SIDE_PADDING = 16
+const SIDE_PADDING = 13
 const CARD_SPACING = 14
 const PEEK = 20
 const CARD_WIDTH = width - SIDE_PADDING * 2 - PEEK
