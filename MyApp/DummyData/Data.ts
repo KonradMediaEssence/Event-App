@@ -6,12 +6,14 @@ export interface Event {
 	category: string
 	cost: string | number
 	time: string
+	desc: string
 }
 
 export interface News {
 	id: string
 	title: string
 	date: Date | string
+	src: string | any
 }
 
 export const EventList: Event[] = [
@@ -21,8 +23,9 @@ export const EventList: Event[] = [
 		date: "2025-10-01",
 		src: require("../assets/images/img.jpg"),
 		category: "Muzyka",
-		cost: "Darmowy",
+		cost: 0,
 		time: "18:00",
+		desc: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 	},
 	{
 		id: "2",
@@ -32,6 +35,7 @@ export const EventList: Event[] = [
 		category: "Teatr",
 		cost: 20,
 		time: "21:00",
+		desc: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 	},
 	{
 		id: "3",
@@ -39,8 +43,9 @@ export const EventList: Event[] = [
 		date: "2025-10-10",
 		src: require("../assets/images/img.jpg"),
 		category: "Sztuka",
-		cost: "Darmowy",
+		cost: 0,
 		time: "18:00",
+		desc: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 	},
 	{
 		id: "4",
@@ -50,6 +55,7 @@ export const EventList: Event[] = [
 		category: "Kino",
 		cost: 70,
 		time: "22:00",
+		desc: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 	},
 	{
 		id: "5",
@@ -57,8 +63,9 @@ export const EventList: Event[] = [
 		date: "2025-10-10",
 		src: require("../assets/images/img.jpg"),
 		category: "Literatura",
-		cost: "Darmowy",
+		cost: 0,
 		time: "18:00",
+		desc: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 	},
 	{
 		id: "6",
@@ -68,6 +75,7 @@ export const EventList: Event[] = [
 		category: "Sport",
 		cost: 14,
 		time: "18:00",
+		desc: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 	},
 	{
 		id: "7",
@@ -75,8 +83,9 @@ export const EventList: Event[] = [
 		date: "2025-10-10",
 		src: require("../assets/images/img.jpg"),
 		category: "Festiwal",
-		cost: "Darmowy",
+		cost: 0,
 		time: "18:00",
+		desc: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 	},
 	{
 		id: "8",
@@ -84,8 +93,9 @@ export const EventList: Event[] = [
 		date: "2025-10-10",
 		src: require("../assets/images/img-2.jpg"),
 		category: "Targi",
-		cost: "Darmowy",
+		cost: 0,
 		time: "18:00",
+		desc: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 	},
 	{
 		id: "9",
@@ -95,6 +105,7 @@ export const EventList: Event[] = [
 		category: "Rodzina",
 		cost: 99,
 		time: "18:00",
+		desc: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 	},
 	{
 		id: "10",
@@ -104,6 +115,7 @@ export const EventList: Event[] = [
 		category: "Kulinaria",
 		cost: 120,
 		time: "18:00",
+		desc: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 	},
 	{
 		id: "11",
@@ -111,8 +123,9 @@ export const EventList: Event[] = [
 		date: "2025-10-10",
 		src: require("../assets/images/img.jpg"),
 		category: "Stand-up",
-		cost: "Darmowy",
+		cost: 0,
 		time: "18:00",
+		desc: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 	},
 	{
 		id: "12",
@@ -120,8 +133,9 @@ export const EventList: Event[] = [
 		date: "2025-10-10",
 		src: require("../assets/images/img-2.jpg"),
 		category: "Taniec",
-		cost: "Darmowy",
+		cost: 0,
 		time: "18:00",
+		desc: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 	},
 	{
 		id: "13",
@@ -131,6 +145,7 @@ export const EventList: Event[] = [
 		category: "Edukacja",
 		cost: 19,
 		time: "18:00",
+		desc: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 	},
 	{
 		id: "14",
@@ -138,8 +153,9 @@ export const EventList: Event[] = [
 		date: "2025-10-10",
 		src: require("../assets/images/img-2.jpg"),
 		category: "Biznes",
-		cost: "Darmowy",
+		cost: 0,
 		time: "18:00",
+		desc: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 	},
 	{
 		id: "17",
@@ -147,8 +163,9 @@ export const EventList: Event[] = [
 		date: "2025-10-10",
 		src: require("../assets/images/img.jpg"),
 		category: "Kultura",
-		cost: "Darmowy",
+		cost: 0,
 		time: "18:00",
+		desc: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 	},
 	{
 		id: "18",
@@ -158,6 +175,7 @@ export const EventList: Event[] = [
 		category: "Religia",
 		cost: 88,
 		time: "18:00",
+		desc: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 	},
 	{
 		id: "19",
@@ -167,6 +185,7 @@ export const EventList: Event[] = [
 		category: "Technologia",
 		cost: 47,
 		time: "18:00",
+		desc: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 	},
 	{
 		id: "20",
@@ -174,8 +193,9 @@ export const EventList: Event[] = [
 		date: "2025-10-10",
 		src: require("../assets/images/img-2.jpg"),
 		category: "Plener",
-		cost: "Darmowy",
+		cost: 0,
 		time: "18:00",
+		desc: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 	},
 	{
 		id: "21",
@@ -183,19 +203,65 @@ export const EventList: Event[] = [
 		date: "2025-10-10",
 		src: require("../assets/images/img.jpg"),
 		category: "Święto",
-		cost: "Darmowy",
+		cost: 0,
 		time: "18:00",
+		desc: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 	},
 ]
 
 export const NewsList: News[] = [
-	{ id: "1", title: "News One", date: "2025-10-01" },
-	{ id: "2", title: "News Two", date: "2025-10-05" },
-	{ id: "3", title: "News Three", date: "2025-10-10" },
-	{ id: "4", title: "News Four", date: "2025-10-15" },
-	{ id: "5", title: "News Five", date: "2025-10-20" },
-	{ id: "6", title: "News Six", date: "2025-10-25" },
-	{ id: "7", title: "News Seven", date: "2025-10-30" },
-	{ id: "8", title: "News Eight", date: "2025-11-04" },
-	{ id: "9", title: "News Nine", date: "2025-11-09" },
+	{
+		id: "1",
+		title: "News One",
+		date: "2025-10-01",
+		src: require("../assets/images/img.jpg"),
+	},
+	{
+		id: "2",
+		title: "News Two",
+		date: "2025-10-05",
+		src: require("../assets/images/img.jpg"),
+	},
+	{
+		id: "3",
+		title: "News Three",
+		date: "2025-10-10",
+		src: require("../assets/images/img.jpg"),
+	},
+	{
+		id: "4",
+		title: "News Four",
+		date: "2025-10-15",
+		src: require("../assets/images/img.jpg"),
+	},
+	{
+		id: "5",
+		title: "News Five",
+		date: "2025-10-20",
+		src: require("../assets/images/img.jpg"),
+	},
+	{
+		id: "6",
+		title: "News Six",
+		date: "2025-10-25",
+		src: require("../assets/images/img.jpg"),
+	},
+	{
+		id: "7",
+		title: "News Seven",
+		date: "2025-10-30",
+		src: require("../assets/images/img.jpg"),
+	},
+	{
+		id: "8",
+		title: "News Eight",
+		date: "2025-11-04",
+		src: require("../assets/images/img.jpg"),
+	},
+	{
+		id: "9",
+		title: "News Nine",
+		date: "2025-11-09",
+		src: require("../assets/images/img.jpg"),
+	},
 ]
