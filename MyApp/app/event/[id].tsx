@@ -38,15 +38,30 @@ export default function EventDetails() {
 				/>
 			</View>
 
-			<View className='mt-4'>
-				<Text className='text-2xl font-bold text-gray-900'>
-					Evenet nr. {id}
-				</Text>
-				<Text className='text-gray-500 mt-1'>
-					{event.date instanceof Date
-						? event.date.toLocaleDateString("pl-PL")
-						: event.date}
-				</Text>
+			<View className='flex flex-row justify-between items-center mt-4'>
+				<View>
+					<Text className='text-4xl font-bold text-gray-900'>
+						{event.title}
+					</Text>
+					<Text className='text-gray-500 mt-1'>
+						{(() => {
+							const dateObj = new Date(event.date)
+							return dateObj.toLocaleDateString("pl-PL", {
+								day: "numeric",
+								month: "long",
+								// year: "numeric",
+							})
+						})()}{" "}
+						• {event.time}
+					</Text>
+				</View>
+				<View
+					className={`${typeof event.cost === "number" ? "bg-orange-600" : "bg-green-600"} rounded-full py-2 px-4`}>
+					<Text className='text-white font-bold'>
+						{event.cost}
+						{typeof event.cost === "number" ? "zł" : ""}
+					</Text>
+				</View>
 			</View>
 		</SafeAreaView>
 	)

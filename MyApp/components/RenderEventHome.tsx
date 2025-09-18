@@ -2,6 +2,7 @@ import { router } from "expo-router"
 import { Pressable, Text, View, ImageBackground } from "react-native"
 import { BlurView } from "expo-blur"
 import FontAwesome from "@expo/vector-icons/FontAwesome"
+import { getCategoryColor } from "@/utlis/CategoryColor"
 
 const RenderEventHome = ({
 	item,
@@ -56,7 +57,8 @@ const RenderEventHome = ({
 							<Text className=' text-white font-bold  pr-2'>Dołącz!</Text>
 							<FontAwesome size={10} name='chevron-right' color='#fff' />
 						</View>
-						<View className='mt-4 bg-green-600 rounded-full flex flex-row py-2 px-4 items-center justify-between self-start'>
+						<View
+							className={`mt-4 ${getCategoryColor(item.category)} rounded-full flex flex-row py-2 px-4 items-center justify-between self-start`}>
 							<Text className=' text-white font-bold'>{item.category}</Text>
 						</View>
 					</View>
