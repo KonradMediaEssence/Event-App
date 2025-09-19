@@ -1,12 +1,42 @@
 import { SafeAreaView } from "react-native-safe-area-context"
-import { Image, Pressable, ScrollView, Text, View } from "react-native"
+import {
+	Image,
+	Pressable,
+	ScrollView,
+	Text,
+	View,
+	Animated,
+} from "react-native"
 import { router, useLocalSearchParams } from "expo-router"
 import { EventList } from "@/DummyData/Data"
 import FontAwesome from "@expo/vector-icons/FontAwesome"
+import { useRef, useState } from "react"
 
 export default function EventDetails() {
 	const { id } = useLocalSearchParams<{ id: string }>()
 	const event = EventList.find(e => e.id === id)
+
+	const [liked, setLiked] = useState(false)
+
+	const scale = useRef(new Animated.Value(1)).current
+
+	const handlePress = () => {
+		Animated.sequence([
+			Animated.spring(scale, {
+				toValue: 1.3,
+				useNativeDriver: true,
+				speed: 40,
+				bounciness: 0,
+			}),
+			Animated.spring(scale, {
+				toValue: 1,
+				friction: 3,
+				useNativeDriver: true,
+			}),
+		]).start()
+
+		setLiked(!liked)
+	}
 
 	if (!event) {
 		return (
@@ -20,17 +50,28 @@ export default function EventDetails() {
 
 	return (
 		<SafeAreaView className='flex-1 bg-white px-4'>
+			<View className='relative flex w-full items-center justify-center pb-4'>
+				<Pressable
+					onPress={() => router.back()}
+					className='absolute left-0 top-[11px]'>
+					<FontAwesome name='chevron-left' size={20} color='#111827' />
+				</Pressable>
+				<Text className='text-center text-2xl font-bold text-gray-800 tracking-tight mt-2'>
+					{event.title}
+				</Text>
+				<Pressable
+					onPress={handlePress}
+					className='absolute right-0 top-[10px]'>
+					<Animated.View style={{ transform: [{ scale }] }}>
+						<FontAwesome
+							name={liked ? "heart" : "heart-o"}
+							size={25}
+							color={liked ? "red" : "gray"}
+						/>
+					</Animated.View>
+				</Pressable>
+			</View>
 			<ScrollView showsVerticalScrollIndicator={false}>
-				<View className='relative flex w-full items-center justify-center'>
-					<Pressable
-						onPress={() => router.back()}
-						className='absolute left-0 top-[11px]'>
-						<FontAwesome name='chevron-left' size={20} color='#111827' />
-					</Pressable>
-					<Text className='text-center text-2xl font-bold text-gray-800 tracking-tight mt-2'>
-						{event.title}
-					</Text>
-				</View>
 				<View className='mt-4 w-full'>
 					<Image
 						source={event.src}
@@ -70,11 +111,13 @@ export default function EventDetails() {
 					</Text>
 				</View>
 			</ScrollView>
-			<Pressable
-				onPress={() => alert("Zapisano na wydarzenie!")}
-				className='mb-4 rounded-xl bg-blue-600 py-3 items-center justify-center'>
-				<Text className='text-white text-lg font-bold'>Zapisz się</Text>
-			</Pressable>
+			<View className='bg-white pt-3'>
+				<Pressable
+					onPress={() => alert("Zapisano na wydarzenie!")}
+					className='mb-4 rounded-xl bg-blue-600 py-3 items-center justify-center'>
+					<Text className='text-white text-lg font-bold'>Zapisz się</Text>
+				</Pressable>
+			</View>
 		</SafeAreaView>
 	)
 }
