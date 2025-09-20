@@ -14,16 +14,7 @@ export default function TabLayout() {
 					options={{
 						title: "News",
 						tabBarIcon: ({ color }) => (
-							<FontAwesome size={28} name='newspaper-o' color={color} />
-						),
-					}}
-				/>
-				<Tabs.Screen
-					name='index'
-					options={{
-						title: "Home",
-						tabBarIcon: ({ color }) => (
-							<FontAwesome size={28} name='home' color={color} />
+							<FontAwesome size={25} name='newspaper-o' color={color} />
 						),
 					}}
 				/>
@@ -32,7 +23,34 @@ export default function TabLayout() {
 					options={{
 						title: "Wydarzenia",
 						tabBarIcon: ({ color }) => (
-							<FontAwesome size={28} name='calendar' color={color} />
+							<FontAwesome size={25} name='calendar' color={color} />
+						),
+					}}
+				/>
+				<Tabs.Screen
+					name='index'
+					options={{
+						title: "Home",
+						tabBarIcon: ({ color }) => (
+							<FontAwesome size={25} name='home' color={color} />
+						),
+					}}
+				/>
+				<Tabs.Screen
+					name='fav'
+					options={{
+						title: "Ulubione",
+						tabBarIcon: ({ color }) => (
+							<FontAwesome name='heart-o' size={25} color={color} />
+						),
+					}}
+				/>
+				<Tabs.Screen
+					name='loginScreen'
+					options={{
+						title: "Logowanie",
+						tabBarIcon: ({ color }) => (
+							<FontAwesome name='user-o' size={25} color={color} />
 						),
 					}}
 				/>
