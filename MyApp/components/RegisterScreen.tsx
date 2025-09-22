@@ -8,11 +8,11 @@ const RegisterScreen = () => {
 	const [passwordSecure, setPasswordSecure] = useState(true)
 	const router = useRouter()
 	return (
-		<SafeAreaView className='px-4'>
-			<View className=''>
-				<Text className='text-3xl'>Zarejestruj się!</Text>
+		<SafeAreaView className='px-4 flex-1 justify-center'>
+			<View className='items-center mb-6'>
+				<Text className='text-3xl font-bold'>Zarejestruj się!</Text>
 			</View>
-			<View className='gap-2'>
+			<View className='gap-4'>
 				<TextInput className='border py-3 px-2 rounded' placeholder='Imię' />
 				<TextInput className='border py-3 px-2 rounded' placeholder='Email' />
 				<View className='flex-row items-center border rounded px-2'>
