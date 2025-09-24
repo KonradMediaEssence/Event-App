@@ -7,34 +7,41 @@ const RenderEvent = ({
 }: {
 	item: { id: string; title: string; date: Date | string; src: string | any }
 }) => {
+	const dateLabel =
+		item.date instanceof Date
+			? item.date.toLocaleDateString("pl-PL")
+			: item.date
+
 	return (
 		<Pressable
 			onPress={() =>
 				router.push({ pathname: "/event/[id]", params: { id: item.id } })
 			}
-			className='flex justify-between flex-row items-center w-full bg-gray-100 rounded-xl p-4 mb-3'>
-			<View className='flex flex-row items-center gap-4'>
+			android_ripple={{ color: "rgba(255,255,255,0.06)" }}
+			className='flex-row items-center justify-between w-full bg-night-gray rounded-xl p-4 mb-3 border border-white/10 shadow-md'
+			style={({ pressed }) => [
+				{
+					opacity: pressed ? 0.97 : 1,
+					transform: [{ scale: pressed ? 0.99 : 1 }],
+				},
+			]}>
+			<View className='flex-row items-center gap-4'>
+				<Image
+					source={item.src}
+					className='w-16 h-16 rounded-lg'
+					resizeMode='cover'
+				/>
 				<View>
-					<Image
-						source={item.src}
-						className='w-[4rem] h-[4rem] rounded'
-						resizeMode='cover'
-					/>
-				</View>
-				<View>
-					<Text className='text-lg font-semibold text-gray-900'>
+					<Text
+						className='text-lg font-semibold text-light-base'
+						numberOfLines={1}>
 						{item.title}
 					</Text>
-					<Text className='text-sm text-gray-500'>
-						{item.date instanceof Date
-							? item.date.toLocaleDateString("pl-PL")
-							: item.date}
-					</Text>
+					<Text className='text-sm text-light-subtle'>{dateLabel}</Text>
 				</View>
 			</View>
-			<View>
-				<FontAwesome size={15} name='chevron-right' color='#B2BEB5' />
-			</View>
+
+			<FontAwesome size={15} name='chevron-right' color='#EEEEEE99' />
 		</Pressable>
 	)
 }

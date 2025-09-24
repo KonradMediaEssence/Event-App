@@ -15,52 +15,64 @@ const RenderEventHome = ({
 		category: string
 	}
 }) => {
+	const dateLabel =
+		item.date instanceof Date
+			? item.date.toLocaleDateString("pl-PL", {
+					day: "2-digit",
+					month: "short",
+					year: "numeric",
+				})
+			: item.date
+
 	return (
 		<Pressable
 			onPress={() =>
 				router.push({ pathname: "/event/[id]", params: { id: item.id } })
 			}
-			className='rounded-xl bg-white shadow my-2'
+			android_ripple={{ color: "rgba(255,255,255,0.06)", borderless: false }}
+			className='rounded-2xl bg-night-gray shadow-lg border border-white/10 my-2'
 			style={({ pressed }) => [
 				{
-					opacity: pressed ? 0.95 : 1,
+					opacity: pressed ? 0.97 : 1,
 					transform: [{ scale: pressed ? 0.98 : 1 }],
 				},
 			]}>
-			<View className='flex gap-4 p-4'>
-				<View className='w-full'>
+			<View className='gap-4 p-4'>
+				<View className='w-full rounded-2xl overflow-hidden'>
 					<ImageBackground
 						source={item.src}
 						resizeMode='cover'
-						className='h-56 rounded-xl overflow-hidden'>
+						className='h-56'
+						imageStyle={{ borderRadius: 16 }}>
 						<View className='flex-1 justify-end'>
-							<BlurView intensity={25} tint='dark' className='w-full  p-4'>
+							<BlurView intensity={30} tint='dark' className='w-full p-4 pt-2'>
 								<Text
-									className='text-xl font-bold text-white w-full'
+									className='text-xl font-bold text-light-base tracking-tight'
 									numberOfLines={2}>
 									{item.title}
 								</Text>
-								<Text className='self-start rounded-full text-base font-bold text-white'>
-									{item.date instanceof Date
-										? item.date.toLocaleDateString("pl-PL", {
-												day: "2-digit",
-												month: "short",
-												year: "numeric",
-											})
-										: item.date}
-								</Text>
+
+								<View className='self-start mt-2 rounded-full bg-black/30 px-3 py-[2px] border border-white/10'>
+									<Text className='text-light-subtle text-[12px] font-semibold'>
+										{dateLabel}
+									</Text>
+								</View>
 							</BlurView>
 						</View>
 					</ImageBackground>
-					<View className='flex flex-row justify-between'>
-						<View className='mt-4 bg-slate-600 rounded-full flex flex-row py-2 px-4 items-center justify-between self-start'>
-							<Text className=' text-white font-bold  pr-2'>Dołącz!</Text>
-							<FontAwesome size={10} name='chevron-right' color='#fff' />
-						</View>
-						<View
-							className={`mt-4 ${getCategoryColor(item.category)} rounded-full flex flex-row py-2 px-4 items-center justify-between self-start`}>
-							<Text className=' text-white font-bold'>{item.category}</Text>
-						</View>
+				</View>
+
+				<View className='flex flex-row justify-between'>
+					<View className='mt-2 bg-accent-teal rounded-full flex-row py-2 px-4 items-center self-start shadow shadow-black/30'>
+						<Text className='text-white font-bold pr-2'>Dołącz!</Text>
+						<FontAwesome size={10} name='chevron-right' color='#EEEEEE' />
+					</View>
+
+					<View
+						className={`mt-2 ${getCategoryColor(
+							item.category
+						)} rounded-full flex-row py-2 px-4 items-center self-start border border-white/10`}>
+						<Text className='text-white font-bold'>{item.category}</Text>
 					</View>
 				</View>
 			</View>

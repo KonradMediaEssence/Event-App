@@ -40,7 +40,7 @@ export default function EventDetails() {
 
 	if (!event) {
 		return (
-			<SafeAreaView className='flex-1 items-center justify-center bg-white'>
+			<SafeAreaView className='flex-1 items-center justify-center bg-night-dark'>
 				<Text className='text-base text-gray-600'>
 					Nie znaleziono wydarzenia.
 				</Text>
@@ -49,29 +49,37 @@ export default function EventDetails() {
 	}
 
 	return (
-		<SafeAreaView className='flex-1 bg-white px-4'>
-			<View className='relative flex w-full items-center justify-center pb-4'>
-				<Pressable
-					onPress={() => router.back()}
-					className='absolute left-0 top-[11px]'>
-					<FontAwesome name='chevron-left' size={20} color='#111827' />
-				</Pressable>
-				<Text className='text-center text-2xl font-bold text-gray-800 tracking-tight mt-2'>
-					{event.title}
-				</Text>
-				<Pressable
-					onPress={handlePress}
-					className='absolute right-0 top-[10px]'>
-					<Animated.View style={{ transform: [{ scale }] }}>
-						<FontAwesome
-							name={liked ? "heart" : "heart-o"}
-							size={25}
-							color={liked ? "red" : "gray"}
-						/>
-					</Animated.View>
-				</Pressable>
-			</View>
-			<ScrollView showsVerticalScrollIndicator={false}>
+		<View className='flex-1 bg-night-dark'>
+			{/* GÓRA: szary z bezpieczną strefą */}
+			<SafeAreaView edges={["top"]} className='bg-night-gray'>
+				<View className='relative w-full items-center justify-center pb-4 px-4'>
+					<Pressable
+						onPress={() => router.back()}
+						className='absolute left-4 top-[6px]'>
+						<FontAwesome name='chevron-left' size={20} color='#eee' />
+					</Pressable>
+					<Text className='mt-2 text-center text-2xl font-bold text-light-base tracking-tight'>
+						{event.title}
+					</Text>
+					<Pressable
+						onPress={handlePress}
+						className='absolute right-4 top-[6px]'>
+						<Animated.View style={{ transform: [{ scale }] }}>
+							<FontAwesome
+								name={liked ? "heart" : "heart-o"}
+								size={25}
+								color={liked ? "red" : "#eee"}
+							/>
+						</Animated.View>
+					</Pressable>
+				</View>
+			</SafeAreaView>
+
+			{/* ŚRODEK: ciemny */}
+			<ScrollView
+				showsVerticalScrollIndicator={false}
+				style={{ backgroundColor: "#222831" }} // bg-night-dark
+				contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 16 }}>
 				<View className='mt-4 w-full'>
 					<Image
 						source={event.src}
@@ -80,23 +88,21 @@ export default function EventDetails() {
 					/>
 				</View>
 
-				<View className='flex flex-row justify-between items-center mt-4'>
+				<View className='mt-4 flex-row justify-between items-center'>
 					<View>
-						<Text className='text-4xl font-bold text-gray-900'>
+						{/* nie używaj gray-900 w dark UI */}
+						<Text className='text-4xl font-bold text-light-base'>
 							{event.title}
 						</Text>
-						<Text className='text-gray-500 mt-1'>
-							{(() => {
-								const dateObj = new Date(event.date)
-								return dateObj.toLocaleDateString("pl-PL", {
-									day: "numeric",
-									month: "long",
-									// year: "numeric",
-								})
-							})()}{" "}
+						<Text className='mt-1 text-light-subtle'>
+							{new Date(event.date).toLocaleDateString("pl-PL", {
+								day: "numeric",
+								month: "long",
+							})}{" "}
 							• {event.time}
 						</Text>
 					</View>
+
 					<View
 						className={`${event.cost !== 0 ? "bg-orange-600" : "bg-green-600"} rounded-full py-2 px-4`}>
 						<Text className='text-white font-bold'>
@@ -106,18 +112,22 @@ export default function EventDetails() {
 				</View>
 
 				<View className='mt-4 pb-10'>
-					<Text className='text-base font-bold text-gray-900'>
+					<Text className='text-base font-bold text-light-subtle'>
 						{event.desc}
 					</Text>
 				</View>
 			</ScrollView>
-			<View className='bg-white pt-3'>
-				<Pressable
-					onPress={() => alert("Zapisano na wydarzenie!")}
-					className='mb-4 rounded-xl bg-blue-600 py-3 items-center justify-center'>
-					<Text className='text-white text-lg font-bold'>Zapisz się</Text>
-				</Pressable>
-			</View>
-		</SafeAreaView>
+
+			{/* DÓŁ: szary z bezpieczną strefą */}
+			<SafeAreaView edges={["bottom"]} className='bg-night-gray'>
+				<View className='pt-3 px-4 bg-night-gray'>
+					<Pressable
+						onPress={() => alert("Zapisano na wydarzenie!")}
+						className='rounded-xl bg-accent-teal py-3 items-center justify-center'>
+						<Text className='text-white text-lg font-bold'>Zapisz się</Text>
+					</Pressable>
+				</View>
+			</SafeAreaView>
+		</View>
 	)
 }

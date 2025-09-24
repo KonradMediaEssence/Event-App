@@ -1,44 +1,44 @@
 export const getCategoryColor = (category: string) => {
 	switch (category) {
 		case "Muzyka":
-			return "bg-purple-500"
+			return "bg-category-music"
 		case "Teatr":
-			return "bg-pink-500"
+			return "bg-category-theatre"
 		case "Sztuka":
-			return "bg-red-400"
+			return "bg-category-art"
 		case "Kino":
-			return "bg-gray-700"
+			return "bg-category-cinema"
 		case "Literatura":
-			return "bg-indigo-500"
+			return "bg-category-literature"
 		case "Sport":
-			return "bg-green-500"
+			return "bg-category-sport"
 		case "Festiwal":
-			return "bg-yellow-500"
+			return "bg-category-festival"
 		case "Targi":
-			return "bg-orange-500"
+			return "bg-category-fair"
 		case "Rodzina":
-			return "bg-teal-500"
+			return "bg-category-family"
 		case "Kulinaria":
-			return "bg-rose-500"
+			return "bg-category-food"
 		case "Stand-up":
-			return "bg-blue-400"
+			return "bg-category-standup"
 		case "Taniec":
-			return "bg-fuchsia-500"
+			return "bg-category-dance"
 		case "Edukacja":
-			return "bg-cyan-500"
+			return "bg-category-education"
 		case "Biznes":
-			return "bg-emerald-600"
+			return "bg-category-business"
 		case "Kultura":
-			return "bg-lime-600"
+			return "bg-category-culture"
 		case "Religia":
-			return "bg-amber-600"
+			return "bg-category-religion"
 		case "Technologia":
-			return "bg-sky-600"
+			return "bg-category-tech"
 		case "Plener":
-			return "bg-green-700"
+			return "bg-category-outdoor"
 		case "Święto":
-			return "bg-red-600"
+			return "bg-category-holiday"
 		default:
-			return "bg-gray-400" // fallback
+			return "bg-gray-400"
 	}
 }

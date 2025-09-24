@@ -1,7 +1,7 @@
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Pressable, Text, View } from "react-native"
 import { router, useLocalSearchParams } from "expo-router"
-import { EventList, NewsList } from "@/DummyData/Data"
+import { NewsList } from "@/DummyData/Data"
 import FontAwesome from "@expo/vector-icons/FontAwesome"
 
 export default function NewsDetails() {
@@ -10,7 +10,7 @@ export default function NewsDetails() {
 
 	if (!news) {
 		return (
-			<SafeAreaView className='flex-1 items-center justify-center bg-white'>
+			<SafeAreaView className='flex-1 items-center justify-center '>
 				<Text className='text-base text-gray-600'>
 					Nie znaleziono wiadomości.
 				</Text>

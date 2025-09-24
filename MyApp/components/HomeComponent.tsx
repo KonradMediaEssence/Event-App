@@ -7,15 +7,16 @@ const HomeComponent = () => {
 	return (
 		<SafeAreaView
 			edges={["top", "left", "right"]}
-			className='flex flex-1 items-center px-4 bg-white'>
+			className='flex flex-1 items-center px-4 bg-night-dark'>
 			<View className='flex w-full items-center'>
-				<Text className='text-2xl font-bold text-gray-800 tracking-tight mt-2'>
+				<Text className='text-2xl font-bold text-light-base tracking-tight mt-2'>
 					Zbliżające się wydarzenia
 				</Text>
-				<Text className='text-sm text-gray-500 mt-2'>
+				<Text className='text-sm text-light-subtle mt-2'>
 					Sprawdź, co już wkrótce się odbędzie
 				</Text>
 			</View>
+
 			<View className='w-full flex-1 mt-4'>
 				<FlatList
 					data={EventList}
@@ -23,6 +24,8 @@ const HomeComponent = () => {
 					keyExtractor={item => item.id}
 					showsHorizontalScrollIndicator={false}
 					showsVerticalScrollIndicator={false}
+					style={{ backgroundColor: "#222831" }} // night-dark
+					contentContainerStyle={{ paddingBottom: 24 }}
 				/>
 			</View>
 		</SafeAreaView>

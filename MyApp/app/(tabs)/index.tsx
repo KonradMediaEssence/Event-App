@@ -14,17 +14,17 @@ const CARD_WIDTH = width - SIDE_PADDING * 2 - PEEK
 export default function Tab() {
 	return (
 		<SafeAreaView
-			className='flex flex-1 bg-white'
+			className='flex flex-1 bg-night-dark'
 			edges={["top", "left", "right"]}>
 			<Weather city='Kalisz' />
 			<View className='w-full flex-row items-center justify-between rounded-2xl px-4 pb-3 pt-7'>
-				<Text className='text-3xl font-semibold text-gray-900'>
+				<Text className='text-3xl font-semibold text-light-base'>
 					Nie przegap!
 				</Text>
 				<Text
 					onPress={() => router.push("/events")}
 					suppressHighlighting
-					className='font-semibold text-gray-900'>
+					className='font-semibold text-light-base'>
 					Zobacz więcej!
 				</Text>
 			</View>

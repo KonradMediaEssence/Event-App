@@ -47,11 +47,11 @@ export default function Weather({ city = "Warsaw" }: { city?: string }) {
 	return (
 		<View className='px-4 w-full flex-row items-center justify-between rounded-2xl py-3'>
 			<View>
-				<Text className='text-3xl font-semibold text-gray-900'>
+				<Text className='text-3xl font-semibold text-light-base'>
 					{data.name}
 				</Text>
 				{!!prettyDesc && (
-					<Text className='text-sm text-gray-500 mt-0.5'>{prettyDesc}</Text>
+					<Text className='text-sm text-light-subtle mt-0.5'>{prettyDesc}</Text>
 				)}
 			</View>
 
@@ -65,7 +65,7 @@ export default function Weather({ city = "Warsaw" }: { city?: string }) {
 						cachePolicy='memory-disk'
 					/>
 				)}
-				<Text className='text-2xl font-bold text-gray-900'>
+				<Text className='text-2xl font-bold text-light-base'>
 					{Math.round(data.main.temp)}°C
 				</Text>
 			</View>
