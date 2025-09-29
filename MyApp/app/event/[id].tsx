@@ -50,7 +50,6 @@ export default function EventDetails() {
 
 	return (
 		<View className='flex-1 bg-night-dark'>
-			{/* GÓRA: szary z bezpieczną strefą */}
 			<SafeAreaView edges={["top"]} className='bg-night-gray'>
 				<View className='relative w-full items-center justify-center pb-4 px-4'>
 					<Pressable
@@ -75,7 +74,6 @@ export default function EventDetails() {
 				</View>
 			</SafeAreaView>
 
-			{/* ŚRODEK: ciemny */}
 			<ScrollView
 				showsVerticalScrollIndicator={false}
 				style={{ backgroundColor: "#222831" }} // bg-night-dark
@@ -90,7 +88,6 @@ export default function EventDetails() {
 
 				<View className='mt-4 flex-row justify-between items-center'>
 					<View>
-						{/* nie używaj gray-900 w dark UI */}
 						<Text className='text-4xl font-bold text-light-base'>
 							{event.title}
 						</Text>
@@ -118,7 +115,6 @@ export default function EventDetails() {
 				</View>
 			</ScrollView>
 
-			{/* DÓŁ: szary z bezpieczną strefą */}
 			<SafeAreaView edges={["bottom"]} className='bg-night-gray'>
 				<View className='pt-3 px-4 bg-night-gray'>
 					<Pressable

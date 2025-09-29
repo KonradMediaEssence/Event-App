@@ -1,10 +1,11 @@
+import { FontAwesome } from "@expo/vector-icons"
 import { router } from "expo-router"
-import { Pressable, Text } from "react-native"
+import { Image, Pressable, Text, View } from "react-native"
 
 const RenderNews = ({
 	item,
 }: {
-	item: { id: string; title: string; date: Date | string }
+	item: { id: string; title: string; date: Date | string; src: any }
 }) => {
 	const dateLabel =
 		item.date instanceof Date
@@ -17,17 +18,30 @@ const RenderNews = ({
 				router.push({ pathname: "/news/[id]", params: { id: item.id } })
 			}
 			android_ripple={{ color: "rgba(255,255,255,0.06)" }}
-			className='w-full bg-night-gray rounded-xl p-4 mb-3 border border-white/10 shadow-md'
+			className='w-full bg-night-gray rounded-xl p-4 mb-3 border border-white/10 shadow-md flex-row items-center justify-between'
 			style={({ pressed }) => [
 				{
 					opacity: pressed ? 0.97 : 1,
 					transform: [{ scale: pressed ? 0.99 : 1 }],
 				},
 			]}>
-			<Text className='text-lg font-semibold text-light-base'>
-				{item.title}
-			</Text>
-			<Text className='text-sm text-light-subtle'>{dateLabel}</Text>
+			<View className='flex-row items-center gap-4'>
+				<Image
+					source={item.src}
+					className='w-16 h-16 rounded-lg'
+					resizeMode='cover'
+				/>
+				<View>
+					<Text
+						className='text-lg font-semibold text-light-base'
+						numberOfLines={1}>
+						{item.title}
+					</Text>
+					<Text className='text-sm text-light-subtle'>{dateLabel}</Text>
+				</View>
+			</View>
+
+			<FontAwesome size={15} name='chevron-right' color='#EEEEEE99' />
 		</Pressable>
 	)
 }
