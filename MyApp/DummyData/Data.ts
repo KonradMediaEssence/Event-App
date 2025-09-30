@@ -17,6 +17,12 @@ export interface News {
 	desc: string
 }
 
+export interface FaqList {
+	id: string
+	title: string
+	desc: string
+}
+
 export const EventList: Event[] = [
 	{
 		id: "1",
@@ -273,5 +279,48 @@ export const NewsList: News[] = [
 		date: "2025-11-09",
 		src: require("../assets/images/img.jpg"),
 		desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+	},
+]
+
+export const Faq: FaqList[] = [
+	{
+		id: "1",
+		title: "Czym jest ta aplikacja i do czego służy?",
+		desc: "Aplikacja pokazuje aktualne wydarzenia, imprezy, koncerty i inne atrakcje w Twoim mieście. Dzięki niej łatwo znajdziesz coś ciekawego do zrobienia w wolnym czasie.",
+	},
+	{
+		id: "2",
+		title: "Czy korzystanie z aplikacji jest darmowe?",
+		desc: "Tak, podstawowe funkcje aplikacji są całkowicie darmowe. Niektóre wydarzenia mogą być płatne, ale ich ceny ustalają organizatorzy.",
+	},
+	{
+		id: "3",
+		title: "Czy mogę zapisać wydarzenie, żeby o nim nie zapomnieć?",
+		desc: "Tak! Każde wydarzenie możesz dodać do ulubionych lub włączyć przypomnienie, aby otrzymać powiadomienie przed jego rozpoczęciem.",
+	},
+	{
+		id: "4",
+		title: "Skąd pochodzą informacje o wydarzeniach?",
+		desc: "Dane pochodzą bezpośrednio od organizatorów, oficjalnych stron wydarzeń oraz zaufanych partnerów, dzięki czemu są aktualne i wiarygodne.",
+	},
+	{
+		id: "5",
+		title: "Jak włączyć lub wyłączyć powiadomienia o nowych wydarzeniach?",
+		desc: "Możesz to zrobić w ustawieniach aplikacji. Tam wybierzesz, czy chcesz otrzymywać powiadomienia o wszystkich wydarzeniach, tylko wybranych kategoriach, albo je wyłączyć.",
+	},
+	{
+		id: "6",
+		title: "Czy mogę dodać własne wydarzenie do aplikacji?",
+		desc: "Tak! W sekcji „Dodaj wydarzenie” możesz zgłosić własne wydarzenie — po weryfikacji pojawi się ono w aplikacji.",
+	},
+	{
+		id: "7",
+		title: "Zapomniałem hasła – co mam zrobić?",
+		desc: "Na ekranie logowania kliknij „Nie pamiętasz hasła?” i postępuj zgodnie z instrukcjami, aby je zresetować.",
+	},
+	{
+		id: "8",
+		title: "Jak mogę skontaktować się z pomocą techniczną?",
+		desc: "W zakładce „Pomoc” znajdziesz formularz kontaktowy lub adres e-mail, na który możesz napisać w razie problemów.",
 	},
 ]

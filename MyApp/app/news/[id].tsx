@@ -18,18 +18,8 @@ export default function NewsDetails() {
 		)
 	}
 
-	const formattedDate =
-		news.date instanceof Date
-			? news.date.toLocaleDateString("pl-PL", {
-					day: "numeric",
-					month: "long",
-					year: "numeric",
-				})
-			: news.date
-
 	return (
 		<View className='flex-1 bg-night-dark'>
-			{/* Górny pasek */}
 			<SafeAreaView edges={["top"]} className='bg-night-gray'>
 				<View className='relative w-full items-center justify-center pb-4 px-4'>
 					<Pressable
@@ -46,7 +36,6 @@ export default function NewsDetails() {
 				</View>
 			</SafeAreaView>
 
-			{/* Główna zawartość */}
 			<ScrollView
 				showsVerticalScrollIndicator={false}
 				style={{ backgroundColor: "#222831" }}
@@ -64,10 +53,15 @@ export default function NewsDetails() {
 						<Text className='text-4xl font-bold text-light-base'>
 							{news.title}
 						</Text>
-						<Text className='mt-1 text-light-subtle'>{formattedDate}</Text>
+						<Text className='mt-1 text-light-subtle'>
+							{new Date(news.date).toLocaleDateString("pl-PL", {
+								day: "numeric",
+								month: "long",
+								year: "numeric",
+							})}{" "}
+						</Text>
 					</View>
 
-					{/* Badge informacyjny — opcjonalny */}
 					<View className='bg-blue-600 rounded-full py-2 px-4'>
 						<Text className='text-white font-bold'>News</Text>
 					</View>

@@ -19,7 +19,11 @@ const RenderNewsHomeComponent = ({
 			className='mr-4 rounded-2xl bg-night-gray p-4 border border-white/10'>
 			<View className='gap-2 items-center'>
 				<View>
-					<Image source={item.src} className='w-32 h-24' resizeMode='cover' />
+					<Image
+						source={item.src}
+						className='w-32 h-24 rounded-lg'
+						resizeMode='cover'
+					/>
 				</View>
 				<View>
 					<Text className='text-white'>{item.title}</Text>
