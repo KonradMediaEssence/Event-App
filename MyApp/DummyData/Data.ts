@@ -282,7 +282,7 @@ export const NewsList: News[] = [
 	},
 ]
 
-export const Faq: FaqList[] = [
+export const FaqItem: FaqList[] = [
 	{
 		id: "1",
 		title: "Czym jest ta aplikacja i do czego służy?",
