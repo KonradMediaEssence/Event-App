@@ -1,9 +1,7 @@
 import { Tabs } from "expo-router"
 import FontAwesome from "@expo/vector-icons/FontAwesome"
-import { StatusBar } from "react-native"
-import { Dimensions, Platform } from "react-native"
+import { Dimensions, Platform, StatusBar } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-
 const { width } = Dimensions.get("window")
 const guidelineBaseWidth = 375
 const scale = (size: number) => (width / guidelineBaseWidth) * size
