@@ -24,7 +24,7 @@ const HomeComponent = () => {
 					keyExtractor={item => item.id}
 					showsHorizontalScrollIndicator={false}
 					showsVerticalScrollIndicator={false}
-					style={{ backgroundColor: "#222831" }} // night-dark
+					style={{ backgroundColor: "#222831" }}
 					contentContainerStyle={{ paddingBottom: 24 }}
 				/>
 			</View>

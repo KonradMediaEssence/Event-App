@@ -16,7 +16,7 @@ export default function EventDetails() {
 	const { id } = useLocalSearchParams<{ id: string }>()
 	const event = EventList.find(e => e.id === id)
 
-	const [liked, setLiked] = useState(false)
+	const [isFavourite, setIsFavourite] = useState<boolean>(!!event?.isFavourite)
 
 	const scale = useRef(new Animated.Value(1)).current
 
@@ -35,7 +35,11 @@ export default function EventDetails() {
 			}),
 		]).start()
 
-		setLiked(!liked)
+		setIsFavourite(prev => {
+			const next = !prev
+			if (event) event.isFavourite = next
+			return next
+		})
 	}
 
 	if (!event) {
@@ -57,17 +61,19 @@ export default function EventDetails() {
 						className='absolute left-4 top-[6px]'>
 						<FontAwesome name='chevron-left' size={20} color='#eee' />
 					</Pressable>
+
 					<Text className='mt-2 text-center text-2xl font-bold text-light-base tracking-tight'>
 						{event.title}
 					</Text>
+
 					<Pressable
 						onPress={handlePress}
 						className='absolute right-4 top-[6px]'>
 						<Animated.View style={{ transform: [{ scale }] }}>
 							<FontAwesome
-								name={liked ? "heart" : "heart-o"}
+								name={isFavourite ? "heart" : "heart-o"}
 								size={25}
-								color={liked ? "red" : "#eee"}
+								color={isFavourite ? "red" : "#eee"}
 							/>
 						</Animated.View>
 					</Pressable>
@@ -76,7 +82,7 @@ export default function EventDetails() {
 
 			<ScrollView
 				showsVerticalScrollIndicator={false}
-				style={{ backgroundColor: "#222831" }} // bg-night-dark
+				style={{ backgroundColor: "#222831" }}
 				contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 16 }}>
 				<View className='mt-4 w-full'>
 					<Image
@@ -101,7 +107,9 @@ export default function EventDetails() {
 					</View>
 
 					<View
-						className={`${event.cost !== 0 ? "bg-orange-600" : "bg-green-600"} rounded-full py-2 px-4`}>
+						className={`${
+							event.cost !== 0 ? "bg-orange-600" : "bg-green-600"
+						} rounded-full py-2 px-4`}>
 						<Text className='text-white font-bold'>
 							{event.cost === 0 ? "Darmowy" : `${event.cost} zł`}
 						</Text>
