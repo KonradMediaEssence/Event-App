@@ -1,16 +1,13 @@
+import { publicUrl } from "@/lib/supabase"
+import { News } from "@/types"
 import { router } from "expo-router"
 import { Image, Pressable, Text, View } from "react-native"
 
-const RenderNewsHomeComponent = ({
-	item,
-}: {
-	item: {
-		id: string
-		title: string
-		date: Date | string
-		src: string | any
-	}
-}) => {
+type Props = { item: Pick<News, "id" | "title" | "date" | "src"> }
+
+const RenderNewsHomeComponent = ({ item }: Props) => {
+	const uri = item.src ? publicUrl(item.src) : null
+
 	return (
 		<Pressable
 			onPress={() =>
@@ -18,13 +15,19 @@ const RenderNewsHomeComponent = ({
 			}
 			className='mr-4 rounded-2xl bg-night-gray p-4 border border-white/10'>
 			<View className='gap-2 items-center'>
-				<View>
-					<Image
-						source={item.src}
-						className='w-32 h-24 rounded-lg'
-						resizeMode='cover'
-					/>
-				</View>
+				{uri ? (
+					<View>
+						<Image
+							source={{ uri }}
+							className='w-32 h-24 rounded-lg'
+							resizeMode='cover'
+						/>
+					</View>
+				) : (
+					<View className='w-32 h-24 rounded-lg bg-black/20 items-center justify-center'>
+						<Text className='text-gray-400 text-xs'>brak zdjęcia</Text>
+					</View>
+				)}
 				<View>
 					<Text className='text-white'>{item.title}</Text>
 				</View>

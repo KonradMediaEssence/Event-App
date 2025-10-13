@@ -6,19 +6,49 @@ import {
 	Text,
 	View,
 	Animated,
+	ActivityIndicator,
+	Alert,
 } from "react-native"
 import { router, useLocalSearchParams } from "expo-router"
-import { EventList } from "@/DummyData/Data"
 import FontAwesome from "@expo/vector-icons/FontAwesome"
-import { useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { supabase, publicUrl } from "@/lib/supabase"
+import { Event } from "@/types"
 
 export default function EventDetails() {
 	const { id } = useLocalSearchParams<{ id: string }>()
-	const event = EventList.find(e => e.id === id)
 
-	const [isFavourite, setIsFavourite] = useState<boolean>(!!event?.isFavourite)
+	const [event, setEvent] = useState<Event | null>(null)
+	const [loading, setLoading] = useState(true)
+	const [isFavourite, setIsFavourite] = useState(false)
 
 	const scale = useRef(new Animated.Value(1)).current
+
+	useEffect(() => {
+		if (!id) return
+
+		const load = async () => {
+			setLoading(true)
+			const { data, error } = await supabase
+				.from("events")
+				.select("*")
+				.eq("id", id)
+				.single()
+
+			if (error) {
+				setLoading(false)
+				return
+			}
+
+			setEvent(data as Event)
+			setIsFavourite(!!data?.is_favourite)
+			setLoading(false)
+		}
+
+		load()
+	}, [id])
+
+	const imgUri = useMemo(() => publicUrl(event?.src ?? null), [event?.src])
 
 	const handlePress = () => {
 		Animated.sequence([
@@ -35,17 +65,22 @@ export default function EventDetails() {
 			}),
 		]).start()
 
-		setIsFavourite(prev => {
-			const next = !prev
-			if (event) event.isFavourite = next
-			return next
-		})
+		setIsFavourite(prev => !prev)
+	}
+
+	if (loading) {
+		return (
+			<SafeAreaView className='flex-1 items-center justify-center bg-night-dark'>
+				<ActivityIndicator />
+				<Text className='mt-2 text-gray-400'>Ładowanie…</Text>
+			</SafeAreaView>
+		)
 	}
 
 	if (!event) {
 		return (
 			<SafeAreaView className='flex-1 items-center justify-center bg-night-dark'>
-				<Text className='text-base text-gray-600'>
+				<Text className='text-base text-gray-400'>
 					Nie znaleziono wydarzenia.
 				</Text>
 			</SafeAreaView>
@@ -79,17 +114,22 @@ export default function EventDetails() {
 					</Pressable>
 				</View>
 			</SafeAreaView>
-
 			<ScrollView
 				showsVerticalScrollIndicator={false}
 				style={{ backgroundColor: "#222831" }}
 				contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 16 }}>
 				<View className='mt-4 w-full'>
-					<Image
-						source={event.src}
-						className='w-full h-[45vh] rounded-xl'
-						resizeMode='cover'
-					/>
+					{imgUri ? (
+						<Image
+							source={{ uri: imgUri }}
+							className='w-full h-[45vh] rounded-xl'
+							resizeMode='cover'
+						/>
+					) : (
+						<View className='w-full h-[45vh] rounded-xl bg-black/30 items-center justify-center'>
+							<Text className='text-gray-400'>brak zdjęcia</Text>
+						</View>
+					)}
 				</View>
 
 				<View className='mt-4 flex-row justify-between items-center'>
@@ -117,16 +157,17 @@ export default function EventDetails() {
 				</View>
 
 				<View className='mt-4 pb-10'>
-					<Text className='text-base font-bold text-light-subtle'>
-						{event.desc}
-					</Text>
+					{!!event.desc && (
+						<Text className='text-base font-bold text-light-subtle'>
+							{event.desc}
+						</Text>
+					)}
 				</View>
 			</ScrollView>
-
 			<SafeAreaView edges={["bottom"]} className='bg-night-gray'>
 				<View className='pt-3 px-4 bg-night-gray'>
 					<Pressable
-						onPress={() => alert("Zapisano na wydarzenie!")}
+						onPress={() => Alert.alert("Zapis", "Zapisano na wydarzenie!")}
 						className='rounded-xl bg-accent-teal py-3 items-center justify-center'>
 						<Text className='text-white text-lg font-bold'>Zapisz się</Text>
 					</Pressable>

@@ -1,10 +1,38 @@
-import { FlatList, Text, View } from "react-native"
+import { useCallback, useEffect, useState } from "react"
+import {
+	ActivityIndicator,
+	FlatList,
+	RefreshControl,
+	Text,
+	View,
+} from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import RenderNews from "./RenderNews"
-import { NewsList } from "@/DummyData/Data"
 import RenderNewsBig from "./RenderNewsBig"
+import { fetchNews } from "@/api"
+import type { News } from "@/types"
 
-const NewsComponent = () => {
+export default function NewsComponent() {
+	const [items, setItems] = useState<News[]>([])
+	const [loading, setLoading] = useState(true)
+	const [refreshing, setRefreshing] = useState(false)
+
+	const load = useCallback(async () => {
+		try {
+			const data = await fetchNews()
+			setItems(data)
+		} catch (e: any) {
+			console.warn("News load error:", e.message)
+		} finally {
+			setLoading(false)
+			setRefreshing(false)
+		}
+	}, [])
+
+	useEffect(() => {
+		load()
+	}, [load])
+
 	return (
 		<SafeAreaView
 			className='bg-night-dark flex-1 items-center px-4'
@@ -19,32 +47,44 @@ const NewsComponent = () => {
 			</View>
 
 			<View className='flex-1 w-full mt-4'>
-				{NewsList.length === 0 && (
-					<View className='flex-1 justify-center items-center'>
-						<Text className='text-light-subtle'>
-							Brak dostępnych wiadomości.
-						</Text>
+				{loading ? (
+					<View className='py-8 items-center'>
+						<ActivityIndicator />
+						<Text className='mt-2 text-light-subtle'>Ładowanie newsów…</Text>
 					</View>
+				) : (
+					<FlatList
+						data={items}
+						keyExtractor={item => item.id}
+						renderItem={({ item, index }) =>
+							index === 0 ? (
+								<RenderNewsBig item={item} />
+							) : (
+								<RenderNews item={item} />
+							)
+						}
+						refreshControl={
+							<RefreshControl
+								refreshing={refreshing}
+								onRefresh={() => {
+									setRefreshing(true)
+									load()
+								}}
+							/>
+						}
+						ListEmptyComponent={
+							<View className='flex-1 justify-center items-center py-24'>
+								<Text className='text-light-subtle'>
+									Brak dostępnych wiadomości.
+								</Text>
+							</View>
+						}
+						showsVerticalScrollIndicator={false}
+						style={{ backgroundColor: "#222831" }}
+						contentContainerStyle={{ paddingBottom: 24 }}
+					/>
 				)}
-
-				<FlatList
-					data={NewsList}
-					renderItem={({ item, index }) =>
-						index === 0 ? (
-							<RenderNewsBig item={item} />
-						) : (
-							<RenderNews item={item} />
-						)
-					}
-					keyExtractor={item => item.id}
-					showsHorizontalScrollIndicator={false}
-					showsVerticalScrollIndicator={false}
-					style={{ backgroundColor: "#222831" }}
-					contentContainerStyle={{ paddingBottom: 24 }}
-				/>
 			</View>
 		</SafeAreaView>
 	)
 }
-
-export default NewsComponent

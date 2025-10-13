@@ -1,15 +1,18 @@
 import { router } from "expo-router"
 import { Image, Pressable, Text, View } from "react-native"
+import { publicUrl } from "@/lib/supabase"
+import type { News } from "@/types"
 
-const RenderNewsBig = ({
-	item,
-}: {
-	item: { id: string; title: string; date: Date | string; src: string | any }
-}) => {
-	const dateLabel =
-		item.date instanceof Date
-			? item.date.toLocaleDateString("pl-PL")
-			: item.date
+type Props = { item: Pick<News, "id" | "title" | "date" | "src"> }
+
+export default function RenderNewsBig({ item }: Props) {
+	const uri = item.src ? publicUrl(item.src) : null
+
+	const dateLabel = new Date(item.date).toLocaleDateString("pl-PL", {
+		day: "2-digit",
+		month: "short",
+		year: "numeric",
+	})
 
 	return (
 		<Pressable
@@ -24,17 +27,22 @@ const RenderNewsBig = ({
 					transform: [{ scale: pressed ? 0.98 : 1 }],
 				},
 			]}>
-			{/* Obrazek z pewnym clipem rogów */}
 			<View className='rounded-2xl overflow-hidden'>
-				<Image source={item.src} className='w-full h-96' resizeMode='cover' />
+				{uri ? (
+					<Image source={{ uri }} className='w-full h-96' resizeMode='cover' />
+				) : (
+					<View className='w-full h-96 bg-black/20 items-center justify-center'>
+						<Text className='text-gray-400'>brak zdjęcia</Text>
+					</View>
+				)}
 			</View>
 
 			<View className='flex-row items-center justify-between mt-4'>
-				<Text className='text-2xl font-bold text-light-base'>{item.title}</Text>
+				<Text className='text-2xl font-bold text-light-base' numberOfLines={2}>
+					{item.title}
+				</Text>
 				<Text className='text-base text-light-subtle'>{dateLabel}</Text>
 			</View>
 		</Pressable>
 	)
 }
-
-export default RenderNewsBig

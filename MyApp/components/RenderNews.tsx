@@ -1,17 +1,19 @@
+import { publicUrl } from "@/lib/supabase"
+import { News } from "@/types"
 import { FontAwesome } from "@expo/vector-icons"
 import { router } from "expo-router"
 import { Image, Pressable, Text, View } from "react-native"
 
-const RenderNews = ({
-	item,
-}: {
-	item: { id: string; title: string; date: Date | string; src: any }
-}) => {
-	const dateLabel =
-		item.date instanceof Date
-			? item.date.toLocaleDateString("pl-PL")
-			: item.date
+type Props = { item: Pick<News, "id" | "title" | "date" | "src"> }
 
+const RenderNews = ({ item }: Props) => {
+	const uri = item.src ? publicUrl(item.src) : null
+
+	const dateLabel = new Date(item.date).toLocaleDateString("pl-PL", {
+		day: "2-digit",
+		month: "short",
+		year: "numeric",
+	})
 	return (
 		<Pressable
 			onPress={() =>
@@ -26,11 +28,17 @@ const RenderNews = ({
 				},
 			]}>
 			<View className='flex-row items-center gap-4'>
-				<Image
-					source={item.src}
-					className='w-16 h-16 rounded-lg'
-					resizeMode='cover'
-				/>
+				{uri ? (
+					<Image
+						source={{ uri }}
+						className='w-16 h-16 rounded-lg'
+						resizeMode='cover'
+					/>
+				) : (
+					<View className='w-16 h-16 rounded-lg bg-black/20 items-center justify-center'>
+						<Text className='text-gray-400 text-xs'>brak zdjęcia</Text>
+					</View>
+				)}
 				<View>
 					<Text
 						className='text-lg font-semibold text-light-base'

@@ -1,17 +1,61 @@
 import { SafeAreaView } from "react-native-safe-area-context"
-import { Image, Pressable, ScrollView, Text, View } from "react-native"
+import {
+	Image,
+	Pressable,
+	ScrollView,
+	Text,
+	View,
+	ActivityIndicator,
+} from "react-native"
 import { router, useLocalSearchParams } from "expo-router"
-import { NewsList } from "@/DummyData/Data"
 import FontAwesome from "@expo/vector-icons/FontAwesome"
+import { useEffect, useMemo, useState } from "react"
+import { supabase, publicUrl } from "@/lib/supabase"
+import { News } from "@/types"
 
 export default function NewsDetails() {
 	const { id } = useLocalSearchParams<{ id: string }>()
-	const news = NewsList.find(e => e.id === id)
+
+	const [news, setNews] = useState<News | null>(null)
+	const [loading, setLoading] = useState(true)
+
+	useEffect(() => {
+		if (!id) return
+
+		const load = async () => {
+			setLoading(true)
+			const { data, error } = await supabase
+				.from("news")
+				.select("*")
+				.eq("id", id)
+				.single()
+
+			if (error) {
+				setNews(null)
+			} else {
+				setNews(data as News)
+			}
+			setLoading(false)
+		}
+
+		load()
+	}, [id])
+
+	const imgUri = useMemo(() => publicUrl(news?.src ?? null), [news?.src])
+
+	if (loading) {
+		return (
+			<SafeAreaView className='flex-1 items-center justify-center bg-night-dark'>
+				<ActivityIndicator />
+				<Text className='mt-2 text-gray-400'>Ładowanie…</Text>
+			</SafeAreaView>
+		)
+	}
 
 	if (!news) {
 		return (
 			<SafeAreaView className='flex-1 items-center justify-center bg-night-dark'>
-				<Text className='text-base text-gray-600'>
+				<Text className='text-base text-gray-400'>
 					Nie znaleziono wiadomości.
 				</Text>
 			</SafeAreaView>
@@ -41,11 +85,17 @@ export default function NewsDetails() {
 				style={{ backgroundColor: "#222831" }}
 				contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 32 }}>
 				<View className='mt-4 w-full'>
-					<Image
-						source={news.src}
-						className='w-full h-[45vh] rounded-xl'
-						resizeMode='cover'
-					/>
+					{imgUri ? (
+						<Image
+							source={{ uri: imgUri }}
+							className='w-full h-[45vh] rounded-xl'
+							resizeMode='cover'
+						/>
+					) : (
+						<View className='w-full h-[45vh] rounded-xl bg-black/30 items-center justify-center'>
+							<Text className='text-gray-400'>brak zdjęcia</Text>
+						</View>
+					)}
 				</View>
 
 				<View className='mt-4 flex-row justify-between items-start'>
@@ -58,7 +108,7 @@ export default function NewsDetails() {
 								day: "numeric",
 								month: "long",
 								year: "numeric",
-							})}{" "}
+							})}
 						</Text>
 					</View>
 
@@ -68,9 +118,11 @@ export default function NewsDetails() {
 				</View>
 
 				<View className='mt-4 pb-10'>
-					<Text className='text-base font-bold text-light-subtle leading-relaxed'>
-						{news.desc}
-					</Text>
+					{!!news.desc && (
+						<Text className='text-base font-bold text-light-subtle leading-relaxed'>
+							{news.desc}
+						</Text>
+					)}
 				</View>
 			</ScrollView>
 		</View>

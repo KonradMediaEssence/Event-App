@@ -1,9 +1,29 @@
-import { EventList } from "@/DummyData/Data"
-import { FlatList, Text, View } from "react-native"
+import { ActivityIndicator, FlatList, Text, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import RenderEvent from "./RenderEvent"
+import { useEffect, useState, useCallback } from "react"
+import { fetchUpcomingEventsNoLimit } from "@/api"
+import type { Event } from "@/types"
 
 const HomeComponent = () => {
+	const [events, setEvents] = useState<Event[]>([])
+	const [loading, setLoading] = useState(true)
+
+	const load = useCallback(async () => {
+		try {
+			const data = await fetchUpcomingEventsNoLimit()
+			setEvents(data)
+		} catch (e: any) {
+			console.warn("Events load error:", e.message)
+		} finally {
+			setLoading(false)
+		}
+	}, [])
+
+	useEffect(() => {
+		load()
+	}, [load])
+
 	return (
 		<SafeAreaView
 			edges={["top", "left", "right"]}
@@ -18,15 +38,22 @@ const HomeComponent = () => {
 			</View>
 
 			<View className='w-full flex-1 mt-4'>
-				<FlatList
-					data={EventList}
-					renderItem={({ item }) => <RenderEvent item={item} />}
-					keyExtractor={item => item.id}
-					showsHorizontalScrollIndicator={false}
-					showsVerticalScrollIndicator={false}
-					style={{ backgroundColor: "#222831" }}
-					contentContainerStyle={{ paddingBottom: 24 }}
-				/>
+				{loading ? (
+					<View className='py-6 items-center'>
+						<ActivityIndicator />
+						<Text className='mt-2 text-light-subtle'>Ładowanie wydarzeń…</Text>
+					</View>
+				) : (
+					<FlatList
+						data={events}
+						renderItem={({ item }) => <RenderEvent item={item} />}
+						keyExtractor={item => item.id}
+						showsHorizontalScrollIndicator={false}
+						showsVerticalScrollIndicator={false}
+						style={{ backgroundColor: "#222831" }}
+						contentContainerStyle={{ paddingBottom: 24 }}
+					/>
+				)}
 			</View>
 		</SafeAreaView>
 	)
