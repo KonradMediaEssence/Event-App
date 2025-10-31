@@ -1,9 +1,9 @@
-import { SafeAreaView } from "react-native-safe-area-context"
-import { ActivityIndicator, FlatList, Text, View } from "react-native"
-import RenderEvent from "@/components/RenderEvent"
 import { fetchUpcomingEventsNoLimit } from "@/api"
+import RenderEvent from "@/components/RenderEvent"
 import type { Event } from "@/types"
 import { useCallback, useEffect, useState } from "react"
+import { ActivityIndicator, FlatList, Text, View } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
 
 export default function Fav() {
 	const [events, setEvents] = useState<Event[]>([])
@@ -56,7 +56,7 @@ export default function Fav() {
 						keyExtractor={item => item.id}
 						showsHorizontalScrollIndicator={false}
 						showsVerticalScrollIndicator={false}
-						style={{ backgroundColor: "#222831" }} // night-dark
+						style={{ backgroundColor: "#222831" }}
 						contentContainerStyle={{ paddingBottom: 24 }}
 					/>
 				)}

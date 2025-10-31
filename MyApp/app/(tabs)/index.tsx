@@ -1,20 +1,20 @@
+import { fetchUpcomingEvents } from "@/api"
 import Faq from "@/components/Faq"
 import HomeNewsComponent from "@/components/HomeNewsComponent"
 import RenderEventHome from "@/components/RenderEventHome"
 import Weather from "@/components/Weather"
+import type { Event } from "@/types"
 import { router } from "expo-router"
+import { useCallback, useEffect, useState } from "react"
 import {
+	ActivityIndicator,
+	Dimensions,
 	FlatList,
+	ScrollView,
 	Text,
 	View,
-	Dimensions,
-	ScrollView,
-	ActivityIndicator,
 } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
-import { useEffect, useState, useCallback } from "react"
-import { fetchUpcomingEvents } from "@/api"
-import type { Event } from "@/types"
 
 const { width } = Dimensions.get("window")
 const SIDE_PADDING = 13
@@ -45,7 +45,7 @@ export default function Tab() {
 		<SafeAreaView
 			className='flex flex-1 bg-night-dark'
 			edges={["top", "left", "right"]}>
-			<Weather city='Czajków' />
+			<Weather city='Kalisz' />
 
 			<ScrollView bounces={false} showsVerticalScrollIndicator={false}>
 				<View className='w-full flex-row items-center justify-between rounded-2xl px-4 pb-3 pt-7'>

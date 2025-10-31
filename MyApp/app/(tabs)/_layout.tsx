@@ -1,5 +1,5 @@
-import { Tabs } from "expo-router"
 import FontAwesome from "@expo/vector-icons/FontAwesome"
+import { Tabs } from "expo-router"
 import { Dimensions, Platform, StatusBar } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 const { width } = Dimensions.get("window")
