@@ -46,7 +46,6 @@ const RegisterScreen = () => {
 			return
 		}
 		setError(null)
-		// tu podłączisz realne API; na razie nawigacja:
 		Alert.alert("Sukces", "Konto utworzone!")
 		router.replace("/(tabs)")
 	}
@@ -61,7 +60,6 @@ const RegisterScreen = () => {
 					keyboardShouldPersistTaps='handled'
 					style={{ backgroundColor: "#222831" }}>
 					<View className='flex-1 px-5 justify-center'>
-						{/* Header */}
 						<View className='items-center mb-8'>
 							<View className='h-16 w-16 rounded-full bg-night-gray items-center justify-center shadow-lg border border-white/10'>
 								<Ionicons name='person-add' size={28} color='#00ADB5' />
@@ -82,7 +80,6 @@ const RegisterScreen = () => {
 								/>
 							</View>
 
-							{/* Email */}
 							<View className='mb-4'>
 								<Text className='mb-2 text-light-subtle'>Email</Text>
 								<TextInput
@@ -96,7 +93,6 @@ const RegisterScreen = () => {
 								/>
 							</View>
 
-							{/* Hasło */}
 							<View className='mb-4'>
 								<Text className='mb-2 text-light-subtle'>Hasło</Text>
 								<View className='flex-row items-center rounded-xl bg-night-dark/60 border border-white/10 px-4'>
@@ -121,7 +117,6 @@ const RegisterScreen = () => {
 								</Text>
 							</View>
 
-							{/* Powtórz hasło */}
 							<View className='mb-2'>
 								<Text className='mb-2 text-light-subtle'>Powtórz hasło</Text>
 								<View className='flex-row items-center rounded-xl bg-night-dark/60 border border-white/10 px-4'>
@@ -143,12 +138,10 @@ const RegisterScreen = () => {
 								</View>
 							</View>
 
-							{/* Error */}
 							{error ? (
 								<Text className='mt-2 text-[12px] text-rose-400'>{error}</Text>
 							) : null}
 
-							{/* CTA */}
 							<Pressable
 								onPress={onRegister}
 								disabled={!canSubmit}
@@ -160,7 +153,6 @@ const RegisterScreen = () => {
 								</Text>
 							</Pressable>
 
-							{/* Secondary */}
 							<View className='mt-4 flex-row justify-center'>
 								<Text className='text-light-subtle'>Masz już konto? </Text>
 								<Pressable onPress={() => router.push("/(tabs)/loginScreen")}>
@@ -173,8 +165,6 @@ const RegisterScreen = () => {
 					</View>
 				</ScrollView>
 			</KeyboardAvoidingView>
-
-			{/* Jeśli chcesz, możesz dodać: <SafeAreaView edges={["bottom"]} className="bg-night-gray" /> */}
 		</SafeAreaView>
 	)
 }
