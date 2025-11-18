@@ -35,7 +35,6 @@ const UserScreen = () => {
 	const [editing, setEditing] = useState(false)
 	const [displayName, setDisplayName] = useState("")
 
-	// -------------------- LOAD USER + PROFILE --------------------
 	useEffect(() => {
 		let mounted = true
 
@@ -43,7 +42,6 @@ const UserScreen = () => {
 			try {
 				setLoading(true)
 
-				// 1) user z auth
 				const { data: userData, error: userErr } = await supabase.auth.getUser()
 
 				if (!mounted) return
@@ -57,7 +55,6 @@ const UserScreen = () => {
 
 				setUser(userData.user)
 
-				// 2) profil z tabeli profiles
 				const { data: prof, error: profErr } = await supabase
 					.from("profiles")
 					.select("*")
@@ -67,12 +64,10 @@ const UserScreen = () => {
 				if (!mounted) return
 
 				if (profErr && profErr.code !== "PGRST116") {
-					// PGRST116 = no rows returned
 					console.log("profiles select error:", profErr.message)
 				}
 
 				if (!prof) {
-					// brak rekordu w tabeli – ustawiamy tylko lokalnie
 					const fallbackName = userData.user.email?.split("@")[0] ?? ""
 					setProfile({
 						id: userData.user.id,
@@ -111,7 +106,6 @@ const UserScreen = () => {
 	const greetingName =
 		profile?.display_name || user?.email?.split("@")[0] || "Użytkowniku"
 
-	// -------------------- ZMIANA AVATARA --------------------
 	const handleChangeAvatar = async () => {
 		if (!user) return
 
@@ -173,7 +167,6 @@ const UserScreen = () => {
 			const publicUrl = publicData.publicUrl
 			console.log("PUBLIC URL:", publicUrl)
 
-			// ⬇⬇⬇ KLUCZ: UPSERT zamiast update
 			const { error: profErr } = await supabase.from("profiles").upsert({
 				id: user.id,
 				avatar_url: publicUrl,
@@ -204,7 +197,6 @@ const UserScreen = () => {
 		}
 	}
 
-	// -------------------- ZAPIS PROFILU (IMIĘ) --------------------
 	const handleSaveProfile = async () => {
 		if (!user) return
 		const trimmed = displayName.trim()
@@ -216,7 +208,6 @@ const UserScreen = () => {
 		try {
 			setSaving(true)
 
-			// ⬇⬇⬇ też UPSERT
 			const { error } = await supabase.from("profiles").upsert({
 				id: user.id,
 				display_name: trimmed,
@@ -245,13 +236,11 @@ const UserScreen = () => {
 		setDisplayName(profile?.display_name ?? "")
 	}
 
-	// -------------------- WYLOGOWANIE --------------------
 	const handleLogout = async () => {
 		await supabase.auth.signOut()
 		router.replace("/(tabs)/loginScreen")
 	}
 
-	// -------------------- RENDER --------------------
 	if (loading) {
 		return (
 			<SafeAreaView className='flex-1 items-center justify-center bg-night-dark'>
@@ -279,7 +268,6 @@ const UserScreen = () => {
 			<ScrollView
 				style={{ backgroundColor: "#222831" }}
 				contentContainerStyle={{ padding: 16, paddingBottom: 32 }}>
-				{/* Nagłówek */}
 				<View className='mb-6'>
 					<Text className='text-light-subtle text-sm mb-1'>
 						Witaj ponownie, 👋
@@ -289,7 +277,6 @@ const UserScreen = () => {
 					</Text>
 				</View>
 
-				{/* Karta z avatarem */}
 				<View className='bg-night-gray rounded-2xl p-4 mb-4 border border-white/10 shadow-lg flex-row items-center'>
 					{avatarUri ? (
 						<Image
@@ -325,7 +312,6 @@ const UserScreen = () => {
 					</View>
 				</View>
 
-				{/* Edycja profilu */}
 				<View className='bg-night-gray rounded-2xl p-4 border border-white/10 shadow-lg mb-4'>
 					<Text className='text-light-base font-semibold mb-3 text-lg'>
 						Profil
@@ -371,7 +357,6 @@ const UserScreen = () => {
 					</View>
 				</View>
 
-				{/* Wylogowanie */}
 				<Pressable
 					onPress={handleLogout}
 					className='mt-auto mb-4 bg-accent-teal rounded-xl py-3 items-center justify-center shadow-md shadow-black/40'>
