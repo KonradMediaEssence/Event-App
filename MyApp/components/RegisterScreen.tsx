@@ -8,10 +8,12 @@ import {
 	View,
 	ScrollView,
 	Alert,
+	ActivityIndicator,
 } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Ionicons } from "@expo/vector-icons"
 import { useRouter } from "expo-router"
+import { supabase } from "@/lib/supabase"
 
 const RegisterScreen = () => {
 	const router = useRouter()
@@ -25,6 +27,7 @@ const RegisterScreen = () => {
 	const [secure2, setSecure2] = useState(true)
 
 	const [error, setError] = useState<string | null>(null)
+	const [loading, setLoading] = useState(false)
 
 	const subtle = "#EEEEEECC"
 
@@ -35,9 +38,10 @@ const RegisterScreen = () => {
 		name.trim().length > 1 &&
 		isValidEmail(email) &&
 		pass1.length >= 6 &&
-		pass1 === pass2
+		pass1 === pass2 &&
+		!loading
 
-	const onRegister = () => {
+	const onRegister = async () => {
 		if (!canSubmit) {
 			if (!name.trim()) return setError("Podaj imię.")
 			if (!isValidEmail(email)) return setError("Nieprawidłowy email.")
@@ -45,9 +49,46 @@ const RegisterScreen = () => {
 			if (pass1 !== pass2) return setError("Hasła nie są takie same.")
 			return
 		}
-		setError(null)
-		Alert.alert("Sukces", "Konto utworzone!")
-		router.replace("/(tabs)")
+
+		try {
+			setLoading(true)
+			setError(null)
+
+			const { data, error } = await supabase.auth.signUp({
+				email: email.trim(),
+				password: pass1,
+				options: {
+					data: {
+						name: name.trim(),
+					},
+				},
+			})
+
+			if (error) {
+				console.log("signUp error:", error.message)
+				setError(error.message || "Coś poszło nie tak.")
+				return
+			}
+
+			// Jeśli w Supabase masz włączone Confirm email,
+			// to najczęściej data.session === null i trzeba potwierdzić maila
+			if (!data.session) {
+				Alert.alert(
+					"Sprawdź maila",
+					"Wysłaliśmy link aktywacyjny. Po potwierdzeniu zaloguj się w aplikacji."
+				)
+				router.replace("/(tabs)/loginScreen")
+			} else {
+				// Konto już zalogowane (np. gdy confirm email jest wyłączony)
+				Alert.alert("Sukces", "Konto utworzone i zalogowane!")
+				router.replace("/(tabs)")
+			}
+		} catch (e: any) {
+			console.log("signUp exception:", e)
+			setError(e?.message ?? "Nieoczekiwany błąd.")
+		} finally {
+			setLoading(false)
+		}
 	}
 
 	return (
@@ -68,7 +109,9 @@ const RegisterScreen = () => {
 								Zarejestruj się
 							</Text>
 						</View>
+
 						<View className='bg-night-gray rounded-2xl p-5 shadow-lg border border-white/10'>
+							{/* Imię */}
 							<View className='mb-4'>
 								<Text className='mb-2 text-light-subtle'>Imię</Text>
 								<TextInput
@@ -80,6 +123,7 @@ const RegisterScreen = () => {
 								/>
 							</View>
 
+							{/* Email */}
 							<View className='mb-4'>
 								<Text className='mb-2 text-light-subtle'>Email</Text>
 								<TextInput
@@ -93,6 +137,7 @@ const RegisterScreen = () => {
 								/>
 							</View>
 
+							{/* Hasło */}
 							<View className='mb-4'>
 								<Text className='mb-2 text-light-subtle'>Hasło</Text>
 								<View className='flex-row items-center rounded-xl bg-night-dark/60 border border-white/10 px-4'>
@@ -117,6 +162,7 @@ const RegisterScreen = () => {
 								</Text>
 							</View>
 
+							{/* Powtórz hasło */}
 							<View className='mb-2'>
 								<Text className='mb-2 text-light-subtle'>Powtórz hasło</Text>
 								<View className='flex-row items-center rounded-xl bg-night-dark/60 border border-white/10 px-4'>
@@ -138,21 +184,28 @@ const RegisterScreen = () => {
 								</View>
 							</View>
 
+							{/* Błąd */}
 							{error ? (
 								<Text className='mt-2 text-[12px] text-rose-400'>{error}</Text>
 							) : null}
 
+							{/* CTA */}
 							<Pressable
 								onPress={onRegister}
 								disabled={!canSubmit}
 								className={`mt-5 rounded-xl bg-accent-teal py-3 items-center justify-center shadow-lg shadow-black/40 ${
 									!canSubmit ? "opacity-50" : ""
 								}`}>
-								<Text className='text-white text-base font-bold'>
-									Zarejestruj się
-								</Text>
+								{loading ? (
+									<ActivityIndicator color='#FFFFFF' />
+								) : (
+									<Text className='text-white text-base font-bold'>
+										Zarejestruj się
+									</Text>
+								)}
 							</Pressable>
 
+							{/* Link do logowania */}
 							<View className='mt-4 flex-row justify-center'>
 								<Text className='text-light-subtle'>Masz już konto? </Text>
 								<Pressable onPress={() => router.push("/(tabs)/loginScreen")}>

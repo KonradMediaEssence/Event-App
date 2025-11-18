@@ -1,7 +1,11 @@
+import { useEffect, useState } from "react"
 import FontAwesome from "@expo/vector-icons/FontAwesome"
 import { Tabs } from "expo-router"
 import { Dimensions, Platform, StatusBar } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { supabase } from "@/lib/supabase"
+import type { User } from "@supabase/supabase-js"
+
 const { width } = Dimensions.get("window")
 const guidelineBaseWidth = 375
 const scale = (size: number) => (width / guidelineBaseWidth) * size
@@ -11,6 +15,8 @@ const moderateScale = (size: number, factor = 0.5) =>
 export default function TabLayout() {
 	const insets = useSafeAreaInsets()
 
+	const [user, setUser] = useState<User | null>(null)
+
 	const isSmall = width < 360
 	const labelSize = Math.round(moderateScale(11))
 	const iconSize = Math.round(moderateScale(24))
@@ -19,6 +25,34 @@ export default function TabLayout() {
 	const barHeight = Math.max(50, Math.min(64, baseBarHeight))
 	const paddingTop = Platform.select({ ios: 6, android: 4 })!
 	const paddingBottom = Math.max(insets.bottom, 6)
+
+	useEffect(() => {
+		let mounted = true
+
+		const loadUser = async () => {
+			const { data, error } = await supabase.auth.getUser()
+			if (!mounted) return
+			if (error) {
+				setUser(null)
+			} else {
+				setUser(data.user ?? null)
+			}
+		}
+
+		loadUser()
+
+		const {
+			data: { subscription },
+		} = supabase.auth.onAuthStateChange((_event, session) => {
+			if (!mounted) return
+			setUser(session?.user ?? null)
+		})
+
+		return () => {
+			mounted = false
+			subscription.unsubscribe()
+		}
+	}, [])
 
 	return (
 		<>
@@ -80,14 +114,27 @@ export default function TabLayout() {
 					}}
 				/>
 				<Tabs.Screen
+					name='user'
+					options={{
+						href: user ? undefined : null,
+						title: "Użytkownik",
+						tabBarIcon: ({ color }) => (
+							<FontAwesome size={iconSize} name='user' color={color} />
+						),
+					}}
+				/>
+
+				<Tabs.Screen
 					name='loginScreen'
 					options={{
+						href: user ? null : undefined,
 						title: "Logowanie",
 						tabBarIcon: ({ color }) => (
 							<FontAwesome size={iconSize} name='user-o' color={color} />
 						),
 					}}
 				/>
+
 				<Tabs.Screen
 					name='register'
 					options={{

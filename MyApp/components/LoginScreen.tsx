@@ -7,18 +7,51 @@ import {
 	TextInput,
 	View,
 	ScrollView,
+	Alert,
+	ActivityIndicator,
 } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Ionicons } from "@expo/vector-icons"
 import { useRouter } from "expo-router"
+import { supabase } from "@/lib/supabase"
 
 const LoginScreen = () => {
 	const [passwordSecure, setPasswordSecure] = useState(true)
 	const [email, setEmail] = useState("")
 	const [pass, setPass] = useState("")
-	const router = useRouter()
+	const [loading, setLoading] = useState(false)
 
+	const router = useRouter()
 	const subtle = "#EEEEEECC" // z tailwinda: light.subtle (80%)
+
+	const handleLogin = async () => {
+		if (!email || !pass) {
+			Alert.alert("Błąd", "Podaj email i hasło.")
+			return
+		}
+
+		try {
+			setLoading(true)
+
+			const { data, error } = await supabase.auth.signInWithPassword({
+				email: email.trim(),
+				password: pass,
+			})
+
+			if (error) {
+				Alert.alert("Logowanie nieudane", error.message)
+				return
+			}
+
+			console.log("✅ Zalogowano:", data.user?.email)
+
+			router.replace("/user")
+		} catch (e: any) {
+			Alert.alert("Błąd", e?.message ?? "Coś poszło nie tak.")
+		} finally {
+			setLoading(false)
+		}
+	}
 
 	return (
 		<SafeAreaView className='flex-1 bg-night-dark'>
@@ -28,8 +61,7 @@ const LoginScreen = () => {
 				<ScrollView
 					contentContainerStyle={{ flexGrow: 1 }}
 					keyboardShouldPersistTaps='handled'
-					style={{ backgroundColor: "#222831" }} // night-dark
-				>
+					style={{ backgroundColor: "#222831" }}>
 					<View className='flex-1 px-5 justify-center'>
 						{/* Brand / header */}
 						<View className='items-center mb-8'>
@@ -89,17 +121,25 @@ const LoginScreen = () => {
 
 							{/* CTA */}
 							<Pressable
-								onPress={() => router.replace("/(tabs)")}
-								className='mt-5 rounded-xl bg-accent-teal py-3 items-center justify-center shadow-lg shadow-black/40'>
-								<Text className='text-white text-base font-bold'>
-									Zaloguj się
-								</Text>
+								onPress={handleLogin}
+								disabled={loading}
+								className='mt-5 rounded-xl bg-accent-teal py-3 items-center justify-center shadow-lg shadow-black/40 opacity-100'
+								style={({ pressed }) => ({
+									opacity: loading ? 0.7 : pressed ? 0.9 : 1,
+								})}>
+								{loading ? (
+									<ActivityIndicator color='#FFFFFF' />
+								) : (
+									<Text className='text-white text-base font-bold'>
+										Zaloguj się
+									</Text>
+								)}
 							</Pressable>
 
 							{/* Secondary */}
 							<View className='mt-4 flex-row justify-center'>
 								<Text className='text-light-subtle'>Nie masz konta? </Text>
-								<Pressable onPress={() => router.push("/(tabs)/register")}>
+								<Pressable onPress={() => router.push("/register")}>
 									<Text className='font-semibold text-accent-teal'>
 										Zarejestruj się
 									</Text>
