@@ -145,6 +145,14 @@ export default function TabLayout() {
         />
 
         <Tabs.Screen
+          name="addNews"
+          options={{
+            href: null,
+            headerShown: false,
+          }}
+        />
+
+        <Tabs.Screen
           name="register"
           options={{
             href: null,

@@ -370,6 +370,12 @@ const UserScreen = () => {
           <Text className="text-white text-base font-bold">Dodaj Event</Text>
         </Pressable>
         <Pressable
+          onPress={() => router.navigate("/(tabs)/addNews")}
+          className="mt-auto mb-4 bg-accent-teal rounded-xl py-3 items-center justify-center shadow-md shadow-black/40"
+        >
+          <Text className="text-white text-base font-bold">Dodaj News</Text>
+        </Pressable>
+        <Pressable
           onPress={handleLogout}
           className="mt-auto mb-4 bg-accent-teal rounded-xl py-3 items-center justify-center shadow-md shadow-black/40"
         >
