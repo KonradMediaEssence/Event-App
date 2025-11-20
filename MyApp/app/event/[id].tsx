@@ -13,44 +13,90 @@ import { router, useLocalSearchParams } from "expo-router"
 import FontAwesome from "@expo/vector-icons/FontAwesome"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { supabase, publicUrl } from "@/lib/supabase"
-import { Event } from "@/types"
+import type { Event } from "@/types"
+import type { User } from "@supabase/supabase-js"
 
 export default function EventDetails() {
 	const { id } = useLocalSearchParams<{ id: string }>()
 
 	const [event, setEvent] = useState<Event | null>(null)
+	const [user, setUser] = useState<User | null>(null)
 	const [loading, setLoading] = useState(true)
 	const [isFavourite, setIsFavourite] = useState(false)
+	const [favSaving, setFavSaving] = useState(false)
 
 	const scale = useRef(new Animated.Value(1)).current
 
 	useEffect(() => {
 		if (!id) return
 
+		let mounted = true
+
 		const load = async () => {
-			setLoading(true)
-			const { data, error } = await supabase
-				.from("events")
-				.select("*")
-				.eq("id", id)
-				.single()
+			try {
+				setLoading(true)
 
-			if (error) {
-				setLoading(false)
-				return
+				const { data: userData } = await supabase.auth.getUser()
+				if (!mounted) return
+				setUser(userData.user ?? null)
+
+				const { data, error } = await supabase
+					.from("events")
+					.select("*")
+					.eq("id", id)
+					.single()
+
+				if (!mounted) return
+
+				if (error || !data) {
+					setEvent(null)
+					setIsFavourite(false)
+					return
+				}
+
+				setEvent(data as Event)
+
+				if (userData.user) {
+					const { data: fav, error: favErr } = await supabase
+						.from("event_favourites")
+						.select("id")
+						.eq("user_id", userData.user.id)
+						.eq("event_id", data.id)
+						.maybeSingle()
+
+					if (!mounted) return
+
+					if (favErr) {
+						setIsFavourite(false)
+					} else {
+						setIsFavourite(!!fav)
+					}
+				} else {
+					setIsFavourite(false)
+				}
+			} finally {
+				if (mounted) setLoading(false)
 			}
-
-			setEvent(data as Event)
-			setIsFavourite(!!data?.is_favourite)
-			setLoading(false)
 		}
 
 		load()
+
+		return () => {
+			mounted = false
+		}
 	}, [id])
 
 	const imgUri = useMemo(() => publicUrl(event?.src ?? null), [event?.src])
 
-	const handlePress = () => {
+	const handleToggleFavourite = async () => {
+		if (!event) return
+		if (favSaving) return // blokada spamu clicków
+
+		if (!user) {
+			Alert.alert("Logowanie wymagane", "Zaloguj się, aby dodać do ulubionych.")
+			return
+		}
+
 		Animated.sequence([
 			Animated.spring(scale, {
 				toValue: 1.3,
@@ -65,7 +111,37 @@ export default function EventDetails() {
 			}),
 		]).start()
 
-		setIsFavourite(prev => !prev)
+		const next = !isFavourite
+		setIsFavourite(next)
+
+		try {
+			setFavSaving(true)
+
+			if (next) {
+				const { error } = await supabase.from("event_favourites").insert({
+					user_id: user.id,
+					event_id: event.id,
+				})
+
+				if (error) throw error
+			} else {
+				const { error } = await supabase
+					.from("event_favourites")
+					.delete()
+					.eq("user_id", user.id)
+					.eq("event_id", event.id)
+
+				if (error) throw error
+			}
+		} catch (e: any) {
+			Alert.alert(
+				"Błąd",
+				e?.message || "Nie udało się zaktualizować ulubionych."
+			)
+			setIsFavourite(!next)
+		} finally {
+			setFavSaving(false)
+		}
 	}
 
 	if (loading) {
@@ -102,7 +178,7 @@ export default function EventDetails() {
 					</Text>
 
 					<Pressable
-						onPress={handlePress}
+						onPress={handleToggleFavourite}
 						className='absolute right-4 top-[6px]'>
 						<Animated.View style={{ transform: [{ scale }] }}>
 							<FontAwesome
@@ -114,6 +190,7 @@ export default function EventDetails() {
 					</Pressable>
 				</View>
 			</SafeAreaView>
+
 			<ScrollView
 				showsVerticalScrollIndicator={false}
 				style={{ backgroundColor: "#222831" }}
@@ -164,10 +241,18 @@ export default function EventDetails() {
 					)}
 				</View>
 			</ScrollView>
+
 			<SafeAreaView edges={["bottom"]} className='bg-night-gray'>
 				<View className='pt-3 px-4 bg-night-gray'>
 					<Pressable
-						onPress={() => Alert.alert("Zapis", "Zapisano na wydarzenie!")}
+						onPress={() =>
+							Alert.alert(
+								"Zapisano",
+								isFavourite
+									? "To wydarzenie jest w Twoich ulubionych ❤️"
+									: "Dodaj do ulubionych, aby mieć je pod ręką."
+							)
+						}
 						className='rounded-xl bg-accent-teal py-3 items-center justify-center'>
 						<Text className='text-white text-lg font-bold'>Zapisz się</Text>
 					</Pressable>

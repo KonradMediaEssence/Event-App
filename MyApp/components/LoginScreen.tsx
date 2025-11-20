@@ -22,7 +22,7 @@ const LoginScreen = () => {
 	const [loading, setLoading] = useState(false)
 
 	const router = useRouter()
-	const subtle = "#EEEEEECC" // z tailwinda: light.subtle (80%)
+	const subtle = "#EEEEEECC"
 
 	const handleLogin = async () => {
 		if (!email || !pass) {
@@ -43,8 +43,6 @@ const LoginScreen = () => {
 				return
 			}
 
-			console.log("✅ Zalogowano:", data.user?.email)
-
 			router.replace("/user")
 		} catch (e: any) {
 			Alert.alert("Błąd", e?.message ?? "Coś poszło nie tak.")
@@ -63,7 +61,6 @@ const LoginScreen = () => {
 					keyboardShouldPersistTaps='handled'
 					style={{ backgroundColor: "#222831" }}>
 					<View className='flex-1 px-5 justify-center'>
-						{/* Brand / header */}
 						<View className='items-center mb-8'>
 							<View className='h-16 w-16 rounded-full bg-night-gray items-center justify-center shadow-lg border border-white/10'>
 								<Ionicons name='calendar' size={28} color='#00ADB5' />
@@ -72,10 +69,7 @@ const LoginScreen = () => {
 								Zaloguj się
 							</Text>
 						</View>
-
-						{/* Card */}
 						<View className='bg-night-gray rounded-2xl p-5 shadow-lg border border-white/10'>
-							{/* Email */}
 							<View className='mb-4'>
 								<Text className='mb-2 text-light-subtle'>Email</Text>
 								<TextInput
@@ -88,8 +82,6 @@ const LoginScreen = () => {
 									className='rounded-xl px-4 py-3 bg-night-dark/60 border border-white/10 text-light-base'
 								/>
 							</View>
-
-							{/* Password */}
 							<View className='mb-2'>
 								<Text className='mb-2 text-light-subtle'>Hasło</Text>
 								<View className='flex-row items-center rounded-xl bg-night-dark/60 border border-white/10 px-4'>
@@ -119,7 +111,6 @@ const LoginScreen = () => {
 								</Text>
 							</Pressable>
 
-							{/* CTA */}
 							<Pressable
 								onPress={handleLogin}
 								disabled={loading}
@@ -136,7 +127,6 @@ const LoginScreen = () => {
 								)}
 							</Pressable>
 
-							{/* Secondary */}
 							<View className='mt-4 flex-row justify-center'>
 								<Text className='text-light-subtle'>Nie masz konta? </Text>
 								<Pressable onPress={() => router.push("/register")}>

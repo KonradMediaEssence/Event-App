@@ -65,13 +65,10 @@ const RegisterScreen = () => {
 			})
 
 			if (error) {
-				console.log("signUp error:", error.message)
 				setError(error.message || "Coś poszło nie tak.")
 				return
 			}
 
-			// Jeśli w Supabase masz włączone Confirm email,
-			// to najczęściej data.session === null i trzeba potwierdzić maila
 			if (!data.session) {
 				Alert.alert(
 					"Sprawdź maila",
@@ -79,12 +76,10 @@ const RegisterScreen = () => {
 				)
 				router.replace("/(tabs)/loginScreen")
 			} else {
-				// Konto już zalogowane (np. gdy confirm email jest wyłączony)
 				Alert.alert("Sukces", "Konto utworzone i zalogowane!")
 				router.replace("/(tabs)")
 			}
 		} catch (e: any) {
-			console.log("signUp exception:", e)
 			setError(e?.message ?? "Nieoczekiwany błąd.")
 		} finally {
 			setLoading(false)
@@ -123,7 +118,6 @@ const RegisterScreen = () => {
 								/>
 							</View>
 
-							{/* Email */}
 							<View className='mb-4'>
 								<Text className='mb-2 text-light-subtle'>Email</Text>
 								<TextInput
@@ -137,7 +131,6 @@ const RegisterScreen = () => {
 								/>
 							</View>
 
-							{/* Hasło */}
 							<View className='mb-4'>
 								<Text className='mb-2 text-light-subtle'>Hasło</Text>
 								<View className='flex-row items-center rounded-xl bg-night-dark/60 border border-white/10 px-4'>
@@ -162,7 +155,6 @@ const RegisterScreen = () => {
 								</Text>
 							</View>
 
-							{/* Powtórz hasło */}
 							<View className='mb-2'>
 								<Text className='mb-2 text-light-subtle'>Powtórz hasło</Text>
 								<View className='flex-row items-center rounded-xl bg-night-dark/60 border border-white/10 px-4'>
@@ -184,12 +176,10 @@ const RegisterScreen = () => {
 								</View>
 							</View>
 
-							{/* Błąd */}
 							{error ? (
 								<Text className='mt-2 text-[12px] text-rose-400'>{error}</Text>
 							) : null}
 
-							{/* CTA */}
 							<Pressable
 								onPress={onRegister}
 								disabled={!canSubmit}
@@ -205,7 +195,6 @@ const RegisterScreen = () => {
 								)}
 							</Pressable>
 
-							{/* Link do logowania */}
 							<View className='mt-4 flex-row justify-center'>
 								<Text className='text-light-subtle'>Masz już konto? </Text>
 								<Pressable onPress={() => router.push("/(tabs)/loginScreen")}>
