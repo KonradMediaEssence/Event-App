@@ -1,20 +1,37 @@
-import { SafeAreaView } from "react-native-safe-area-context"
+import { publicUrl, supabase } from "@/lib/supabase"
+import type { Event } from "@/types"
+import FontAwesome from "@expo/vector-icons/FontAwesome"
+import type { User } from "@supabase/supabase-js"
+import { router, useLocalSearchParams } from "expo-router"
+import { useEffect, useMemo, useRef, useState } from "react"
 import {
+	ActivityIndicator,
+	Alert,
+	Animated,
 	Image,
 	Pressable,
 	ScrollView,
+	StyleSheet,
 	Text,
 	View,
-	Animated,
-	ActivityIndicator,
-	Alert,
 } from "react-native"
-import { router, useLocalSearchParams } from "expo-router"
-import FontAwesome from "@expo/vector-icons/FontAwesome"
-import { useEffect, useMemo, useRef, useState } from "react"
-import { supabase, publicUrl } from "@/lib/supabase"
-import type { Event } from "@/types"
-import type { User } from "@supabase/supabase-js"
+import MapView, { Marker } from "react-native-maps"
+import { SafeAreaView } from "react-native-safe-area-context"
+
+const mockEvents = [
+	{
+		id: "1",
+		title: "Koncert",
+		latitude: 52.2297,
+		longitude: 21.0122,
+	},
+	{
+		id: "2",
+		title: "Stand-up",
+		latitude: 52.4064,
+		longitude: 16.9252,
+	},
+]
 
 export default function EventDetails() {
 	const { id } = useLocalSearchParams<{ id: string }>()
@@ -90,7 +107,7 @@ export default function EventDetails() {
 
 	const handleToggleFavourite = async () => {
 		if (!event) return
-		if (favSaving) return // blokada spamu clicków
+		if (favSaving) return
 
 		if (!user) {
 			Alert.alert("Logowanie wymagane", "Zaloguj się, aby dodać do ulubionych.")
@@ -240,6 +257,27 @@ export default function EventDetails() {
 						</Text>
 					)}
 				</View>
+				<View style={styles.mapCard} className='bg-dark-card'>
+					<MapView
+						style={StyleSheet.absoluteFillObject}
+						initialRegion={{
+							latitude: 52.2297,
+							longitude: 21.0122,
+							latitudeDelta: 3,
+							longitudeDelta: 3,
+						}}>
+						{mockEvents.map(event => (
+							<Marker
+								key={event.id}
+								coordinate={{
+									latitude: event.latitude,
+									longitude: event.longitude,
+								}}
+								title={event.title}
+							/>
+						))}
+					</MapView>
+				</View>
 			</ScrollView>
 
 			<SafeAreaView edges={["bottom"]} className='bg-night-gray'>
@@ -261,3 +299,16 @@ export default function EventDetails() {
 		</View>
 	)
 }
+
+const styles = StyleSheet.create({
+	mapCard: {
+		height: 250,
+		borderRadius: 18,
+		overflow: "hidden",
+		shadowColor: "#000",
+		shadowOpacity: 0.2,
+		shadowRadius: 8,
+		shadowOffset: { width: 0, height: 4 },
+		elevation: 5,
+	},
+})

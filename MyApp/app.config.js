@@ -2,21 +2,21 @@ import "dotenv/config"
 
 export default {
 	expo: {
-		name: "MyApp",
-		slug: "MyApp",
+		name: "Evento",
+		slug: "Evento",
 		version: "1.0.0",
 		orientation: "portrait",
-		icon: "./assets/images/goiczi.jpeg",
+		icon: "./assets/images/logo.svg",
 		scheme: "myapp",
 		userInterfaceStyle: "dark",
 		androidStatusBar: {
 			backgroundColor: "#222831",
-			barStyle: "light-content",
+			barStyle: "#222831",
 			translucent: false,
 		},
 		androidNavigationBar: {
 			backgroundColor: "#222831",
-			barStyle: "light-content",
+			barStyle: "#222831",
 			visible: "sticky-immersive",
 		},
 		newArchEnabled: true,
@@ -35,7 +35,7 @@ export default {
 		},
 		web: {
 			output: "static",
-			favicon: "./assets/images/goiczi.jpeg",
+			favicon: "./assets/images/logo.svg",
 			bundler: "metro",
 		},
 		plugins: [

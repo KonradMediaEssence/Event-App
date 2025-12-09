@@ -1,6 +1,7 @@
 import { fetchUpcomingEvents } from "@/api"
 import Faq from "@/components/Faq"
 import HomeNewsComponent from "@/components/HomeNewsComponent"
+import MapHome from "@/components/MapHome"
 import RenderEventHome from "@/components/RenderEventHome"
 import Weather from "@/components/Weather"
 import type { Event } from "@/types"
@@ -92,6 +93,7 @@ export default function Tab() {
 					)}
 				</View>
 
+				<MapHome />
 				<HomeNewsComponent />
 				<Faq />
 			</ScrollView>
