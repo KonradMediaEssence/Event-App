@@ -9,6 +9,8 @@ import {
 	Alert,
 	Animated,
 	Image,
+	Linking,
+	Platform,
 	Pressable,
 	ScrollView,
 	StyleSheet,
@@ -17,21 +19,6 @@ import {
 } from "react-native"
 import MapView, { Marker } from "react-native-maps"
 import { SafeAreaView } from "react-native-safe-area-context"
-
-const mockEvents = [
-	{
-		id: "1",
-		title: "Koncert",
-		latitude: 52.2297,
-		longitude: 21.0122,
-	},
-	{
-		id: "2",
-		title: "Stand-up",
-		latitude: 52.4064,
-		longitude: 16.9252,
-	},
-]
 
 export default function EventDetails() {
 	const { id } = useLocalSearchParams<{ id: string }>()
@@ -161,6 +148,35 @@ export default function EventDetails() {
 		}
 	}
 
+	const handleNavigateToMaps = async () => {
+		if (!event?.latitude || !event?.longitude) {
+			Alert.alert(
+				"Brak lokalizacji",
+				"To wydarzenie nie ma ustawionej lokalizacji."
+			)
+			return
+		}
+
+		const lat = event.latitude
+		const lng = event.longitude
+		const label = encodeURIComponent(event.place_name ?? event.title)
+
+		const url =
+			Platform.OS === "ios"
+				? `http://maps.apple.com/?ll=${lat},${lng}&q=${label}`
+				: `geo:${lat},${lng}?q=${lat},${lng}(${label})`
+
+		const canOpen = await Linking.canOpenURL(url)
+
+		if (!canOpen) {
+			const browserUrl = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`
+			Linking.openURL(browserUrl)
+			return
+		}
+
+		Linking.openURL(url)
+	}
+
 	if (loading) {
 		return (
 			<SafeAreaView className='flex-1 items-center justify-center bg-night-dark'>
@@ -257,25 +273,38 @@ export default function EventDetails() {
 						</Text>
 					)}
 				</View>
+
+				<View className='w-full flex-row items-center justify-between rounded-2xl pb-3 pt-7'>
+					<Text className='text-3xl font-semibold text-light-base'>Mapa</Text>
+
+					<Pressable onPress={handleNavigateToMaps}>
+						<Text
+							suppressHighlighting
+							className='font-semibold text-light-base'>
+							Jak dojechać?
+						</Text>
+					</Pressable>
+				</View>
+
 				<View style={styles.mapCard} className='bg-dark-card'>
 					<MapView
 						style={StyleSheet.absoluteFillObject}
 						initialRegion={{
-							latitude: 52.2297,
-							longitude: 21.0122,
-							latitudeDelta: 3,
-							longitudeDelta: 3,
+							latitude: event.latitude ?? 52.2297,
+							longitude: event.longitude ?? 21.0122,
+							latitudeDelta: 0.05,
+							longitudeDelta: 0.05,
 						}}>
-						{mockEvents.map(event => (
+						{event.latitude && event.longitude && (
 							<Marker
-								key={event.id}
 								coordinate={{
 									latitude: event.latitude,
 									longitude: event.longitude,
 								}}
 								title={event.title}
+								description={event.desc ?? undefined}
 							/>
-						))}
+						)}
 					</MapView>
 				</View>
 			</ScrollView>

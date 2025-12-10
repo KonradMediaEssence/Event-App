@@ -1,19 +1,21 @@
-import { useState } from "react"
-import {
-	View,
-	Text,
-	TextInput,
-	Pressable,
-	ScrollView,
-	ActivityIndicator,
-	Alert,
-	Modal,
-	TouchableOpacity,
-	Image,
-} from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
 import { supabase } from "@/lib/supabase"
 import * as ImagePicker from "expo-image-picker"
+import { useState } from "react"
+import {
+	ActivityIndicator,
+	Alert,
+	Image,
+	Modal,
+	Pressable,
+	ScrollView,
+	StyleSheet,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	View,
+} from "react-native"
+import MapView, { MapPressEvent, Marker } from "react-native-maps"
+import { SafeAreaView } from "react-native-safe-area-context"
 
 const EVENT_BUCKET = "uploads"
 
@@ -46,6 +48,12 @@ const AddEvents = () => {
 	const [category, setCategory] = useState("")
 	const [cost, setCost] = useState("")
 	const [desc, setDesc] = useState("")
+
+	// 🔹 LOKALIZACJA
+	const [placeName, setPlaceName] = useState("")
+	const [address, setAddress] = useState("")
+	const [latitude, setLatitude] = useState<string>("")
+	const [longitude, setLongitude] = useState<string>("")
 
 	const [saving, setSaving] = useState(false)
 
@@ -146,6 +154,13 @@ const AddEvents = () => {
 		return null
 	}
 
+	// 🔹 kliknięcie na mapie – ustawiamy lat/lng
+	const handleMapPress = (e: MapPressEvent) => {
+		const { latitude: lat, longitude: lng } = e.nativeEvent.coordinate
+		setLatitude(lat.toString())
+		setLongitude(lng.toString())
+	}
+
 	const handleAddEvent = async () => {
 		if (!title.trim() || !date.trim() || !time.trim()) {
 			Alert.alert("Błąd", "Tytuł, data i godzina są wymagane.")
@@ -156,6 +171,23 @@ const AddEvents = () => {
 		const costNumber = normalizedCost ? Number(normalizedCost) : 0
 		if (normalizedCost && Number.isNaN(costNumber)) {
 			Alert.alert("Błąd", "Cena musi być liczbą.")
+			return
+		}
+
+		// 🔹 parsowanie współrzędnych (opcjonalne – event może nie mieć lokacji)
+		const latStr = latitude.trim().replace(",", ".")
+		const lngStr = longitude.trim().replace(",", ".")
+
+		const latNumber =
+			latStr.length > 0 && !Number.isNaN(Number(latStr)) ? Number(latStr) : null
+		const lngNumber =
+			lngStr.length > 0 && !Number.isNaN(Number(lngStr)) ? Number(lngStr) : null
+
+		if ((latStr && !latNumber) || (lngStr && !lngNumber)) {
+			Alert.alert(
+				"Błąd",
+				"Nieprawidłowe współrzędne. Użyj formatu, np. 52.2297 / 21.0122."
+			)
 			return
 		}
 
@@ -176,6 +208,10 @@ const AddEvents = () => {
 					category: category.trim() || null,
 					cost: costNumber,
 					desc: desc.trim() || null,
+					place_name: placeName.trim() || null,
+					address: address.trim() || null,
+					latitude: latNumber,
+					longitude: lngNumber,
 				},
 			])
 
@@ -194,6 +230,10 @@ const AddEvents = () => {
 			setDesc("")
 			setImageLocalUri(null)
 			setImagePath(null)
+			setPlaceName("")
+			setAddress("")
+			setLatitude("")
+			setLongitude("")
 		} finally {
 			setSaving(false)
 		}
@@ -247,6 +287,7 @@ const AddEvents = () => {
 					</View>
 				</View>
 
+				{/* Zdjęcie */}
 				<View className='mb-4'>
 					<Text className='mb-2 text-light-subtle'>Zdjęcie wydarzenia</Text>
 
@@ -280,6 +321,7 @@ const AddEvents = () => {
 					</View>
 				</View>
 
+				{/* Kategoria + cena */}
 				<View className='mb-4 flex-row gap-3'>
 					<View className='flex-1'>
 						<Text className='mb-2 text-light-subtle'>Kategoria</Text>
@@ -309,6 +351,7 @@ const AddEvents = () => {
 					</View>
 				</View>
 
+				{/* OPIS */}
 				<View className='mb-6'>
 					<Text className='mb-2 text-light-subtle'>Opis</Text>
 					<TextInput
@@ -321,6 +364,88 @@ const AddEvents = () => {
 						textAlignVertical='top'
 						className='rounded-xl px-4 py-3 bg-night-gray border border-white/10 text-light-base'
 					/>
+				</View>
+
+				{/* 🔹 MIEJSCE + ADRES */}
+				<View className='mb-4'>
+					<Text className='mb-2 text-light-subtle'>Miejsce (nazwa)</Text>
+					<TextInput
+						value={placeName}
+						onChangeText={setPlaceName}
+						placeholder='Np. Hala Stulecia, Klub XYZ...'
+						placeholderTextColor={subtle}
+						className='rounded-xl px-4 py-3 bg-night-gray border border-white/10 text-light-base mb-3'
+					/>
+
+					<Text className='mb-2 text-light-subtle'>Adres</Text>
+					<TextInput
+						value={address}
+						onChangeText={setAddress}
+						placeholder='Np. ul. Długa 5, Warszawa'
+						placeholderTextColor={subtle}
+						className='rounded-xl px-4 py-3 bg-night-gray border border-white/10 text-light-base'
+					/>
+				</View>
+
+				{/* 🔹 WSPÓŁRZĘDNE + MAPA */}
+				<View className='mb-4'>
+					<Text className='mb-2 text-light-subtle'>
+						Lokalizacja (kliknij na mapie, aby ustawić)
+					</Text>
+
+					<View className='flex-row gap-3 mb-3'>
+						<View className='flex-1'>
+							<Text className='text-light-subtle text-xs mb-1'>
+								Szerokość (lat)
+							</Text>
+							<TextInput
+								value={latitude}
+								onChangeText={setLatitude}
+								placeholder='52.2297'
+								placeholderTextColor={subtle}
+								keyboardType='decimal-pad'
+								className='rounded-xl px-4 py-3 bg-night-gray border border-white/10 text-light-base'
+							/>
+						</View>
+						<View className='flex-1'>
+							<Text className='text-light-subtle text-xs mb-1'>
+								Długość (lng)
+							</Text>
+							<TextInput
+								value={longitude}
+								onChangeText={setLongitude}
+								placeholder='21.0122'
+								placeholderTextColor={subtle}
+								keyboardType='decimal-pad'
+								className='rounded-xl px-4 py-3 bg-night-gray border border-white/10 text-light-base'
+							/>
+						</View>
+					</View>
+
+					<View style={styles.mapCard}>
+						<MapView
+							style={StyleSheet.absoluteFillObject}
+							initialRegion={{
+								latitude: 52.2297,
+								longitude: 21.0122,
+								latitudeDelta: 3,
+								longitudeDelta: 3,
+							}}
+							onPress={handleMapPress}>
+							{latitude &&
+								longitude &&
+								!Number.isNaN(Number(latitude)) &&
+								!Number.isNaN(Number(longitude)) && (
+									<Marker
+										coordinate={{
+											latitude: Number(latitude),
+											longitude: Number(longitude),
+										}}
+										title={placeName || title || "Lokalizacja wydarzenia"}
+									/>
+								)}
+						</MapView>
+					</View>
 				</View>
 
 				<Pressable
@@ -339,6 +464,7 @@ const AddEvents = () => {
 				</Pressable>
 			</ScrollView>
 
+			{/* MODAL KATEGORII */}
 			<Modal
 				visible={categoryModalVisible}
 				transparent
@@ -385,5 +511,19 @@ const AddEvents = () => {
 		</SafeAreaView>
 	)
 }
+
+const styles = StyleSheet.create({
+	mapCard: {
+		height: 220,
+		borderRadius: 18,
+		overflow: "hidden",
+		shadowColor: "#000",
+		shadowOpacity: 0.2,
+		shadowRadius: 8,
+		shadowOffset: { width: 0, height: 4 },
+		elevation: 5,
+		marginTop: 4,
+	},
+})
 
 export default AddEvents

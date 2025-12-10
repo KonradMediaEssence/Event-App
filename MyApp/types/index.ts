@@ -8,6 +8,9 @@ export type Event = {
 	cost: number
 	desc: string | null
 	is_favourite: boolean
+	latitude: number | null
+	longitude: number | null
+	place_name: string | null
 }
 
 export type News = {
