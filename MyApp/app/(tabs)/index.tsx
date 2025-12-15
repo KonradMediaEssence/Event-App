@@ -5,8 +5,9 @@ import MapHome from "@/components/MapHome"
 import RenderEventHome from "@/components/RenderEventHome"
 import Weather from "@/components/Weather"
 import type { Event } from "@/types"
+import { useFocusEffect } from "@react-navigation/native"
 import { router } from "expo-router"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useState } from "react"
 import {
 	ActivityIndicator,
 	Dimensions,
@@ -38,9 +39,12 @@ export default function Tab() {
 		}
 	}, [])
 
-	useEffect(() => {
-		load()
-	}, [load])
+	useFocusEffect(
+		useCallback(() => {
+			setLoading(true)
+			load()
+		}, [load])
+	)
 
 	return (
 		<SafeAreaView

@@ -165,6 +165,34 @@ export default function TabLayout() {
 						headerShown: false,
 					}}
 				/>
+				<Tabs.Screen
+					name='editEventsList'
+					options={{
+						href: null,
+						headerShown: false,
+					}}
+				/>
+				<Tabs.Screen
+					name='editEvents/[id]'
+					options={{
+						href: null,
+						headerShown: false,
+					}}
+				/>
+				<Tabs.Screen
+					name='editNewsList'
+					options={{
+						href: null,
+						headerShown: false,
+					}}
+				/>
+				<Tabs.Screen
+					name='editNews/[id]'
+					options={{
+						href: null,
+						headerShown: false,
+					}}
+				/>
 			</Tabs>
 		</>
 	)
